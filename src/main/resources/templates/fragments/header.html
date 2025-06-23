@@ -22,6 +22,7 @@
                         <li class="nav-item" sec:authorize="isAnonymous()">
                             <a class="nav-link" th:href="@{/clientes/cadastrar}" th:text="#{header.cadastro}">Cadastre-se</a>
                         </li>
+
                         <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                             <a class="nav-link" th:href="@{/admin/home}" th:text="#{header.admin}">Painel Admin</a>
                         </li>
@@ -34,10 +35,21 @@
                         <li class="nav-item" sec:authorize="hasRole('CLIENT')">
                             <a class="nav-link" th:href="@{/propostas/cliente}" th:text="#{header.propostas.minhas}">Minhas Propostas</a>
                         </li>
-                        <li class="nav-item" sec:authorize="isAuthenticated()">
-                            <form th:action="@{/logout}" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-link nav-link" th:text="#{header.logout}">Logout</button>
-                            </form>
+
+                        <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span sec:authorize="hasRole('ADMIN')" th:text="#{header.admin.saudacao}">Administrador</span>
+                                <span sec:authorize="hasAnyRole('STORE', 'CLIENT')">
+                                    <span th:text="#{header.ola}">Olá,</span> <span th:text="${#authentication.principal.usuario.nome}"></span>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <form th:action="@{/logout}" method="post">
+                                        <button type="submit" class="dropdown-item" th:text="#{header.logout}">Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
