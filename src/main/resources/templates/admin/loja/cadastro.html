@@ -19,7 +19,9 @@
         </div>
         <div class="form-group mb-3">
             <label th:text="#{admin.loja.cadastro.cnpj.label}">CNPJ</label>
-            <input type="text" class="form-control" th:field="*{cnpj}" required/>
+            <!-- <input type="text" class="form-control" th:field="*{cnpj}" required/> -->
+            <input type="text" class="form-control cnpj-mask" th:field="*{cnpj}" required/>
+
         </div>
         <div class="form-group mb-3">
             <label th:text="#{admin.loja.cadastro.email.label}">Email de Login</label>
