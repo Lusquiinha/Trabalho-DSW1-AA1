@@ -18,6 +18,10 @@ public class ErrorViewController implements ErrorViewResolver {
 		ModelAndView model = new ModelAndView("erro");
 		model.addObject("status", status.value());
 		switch (status.value()) {
+		case 401:
+			model.addObject("error", "erro.401.titulo");
+			model.addObject("message", "erro.401.mensagem");
+			break;
 		case 403:
 			model.addObject("error", "erro.403.titulo");
 			model.addObject("message", "erro.403.mensagem");
@@ -26,9 +30,14 @@ public class ErrorViewController implements ErrorViewResolver {
 			model.addObject("error", "erro.404.titulo");
 			model.addObject("message", "erro.404.mensagem");
 			break;
+		case 405:
+			model.addObject("error", "erro.405.titulo");
+			model.addObject("message", "erro.405.mensagem");
+			break;
 		case 500:
 			model.addObject("error", "erro.500.titulo");
 			model.addObject("message", "erro.500.mensagem");
+			break;
 		default:
 			model.addObject("error", "erro.default.titulo");
 			model.addObject("message", "erro.default.mensagem");
