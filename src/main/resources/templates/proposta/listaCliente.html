@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Minhas Propostas</title>
+</head>
+<body>
+    <section layout:fragment="content">
+        <h2>Minhas Propostas Enviadas</h2>
+        <hr>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Veículo</th>
+                        <th>Loja</th>
+                        <th>Valor da Proposta</th>
+                        <th>Data</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${propostas.isEmpty()}">
+                        <td colspan="5" class="text-center">Você ainda não fez nenhuma proposta.</td>
+                    </tr>
+                    <tr th:each="proposta : ${propostas}">
+                        <td th:text="${proposta.veiculo.modelo}"></td>
+                        <td th:text="${proposta.veiculo.loja.nome}"></td>
+                        <td th:text="'R$ ' + ${#numbers.formatDecimal(proposta.valor, 1, 'POINT', 2, 'COMMA')}"></td>
+                        <td th:text="${#temporals.format(proposta.dataProposta, 'dd/MM/yyyy HH:mm')}"></td>
+                        <td>
+                            <span class="badge"
+                                  th:classappend="${proposta.status.name() == 'ABERTO' ? 'bg-warning' : (proposta.status.name() == 'ACEITO' ? 'bg-success' : 'bg-danger')}"
+                                  th:text="${proposta.status.getDescricao()}">
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</body>
+</html>
