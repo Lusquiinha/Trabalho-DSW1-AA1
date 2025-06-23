@@ -1,5 +1,6 @@
 package dsw.concessionaria.service.spec;
 
+import dsw.concessionaria.domain.Imagem;
 import dsw.concessionaria.domain.Loja;
 import dsw.concessionaria.domain.Veiculo;
 import java.util.List;
@@ -19,4 +20,8 @@ public interface IVeiculoService {
     
     // Requisito R6
     List<Veiculo> buscarPorLoja(Loja loja);
+
+    Imagem buscarImagemPorId(Long id);
+
+    void salvarImagem(Imagem imagem);
 }
