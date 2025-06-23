@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout-base(content = ~{::content})}">
+<body>
+<div th:fragment="content">
+    <h2>Lista de Lojas</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>CNPJ</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="loja : ${lojas}">
+                <td th:text="${loja.id}"></td>
+                <td th:text="${loja.nome}"></td>
+                <td th:text="${loja.email}"></td>
+                <td th:text="${loja.cnpj}"></td>
+                <td>
+                    <a th:href="@{/admin/lojas/excluir/{id}(id=${loja.id})}" class="btn btn-danger btn-sm">Excluir</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,45 +1,63 @@
 package dsw.concessionaria.config;
 
+import dsw.concessionaria.security.UsuarioDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true) // Habilita o uso de @PreAuthorize
 public class WebSecurityConfig {
 
     @Bean
+    public UserDetailsService userDetailsService() {
+        return new UsuarioDetailsServiceImpl();
+    }
+
+    @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-        // Bean que será usado para criptografar e verificar senhas
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            .authenticationProvider(authenticationProvider())
             .authorizeHttpRequests(authz -> authz
-                // Permite o acesso público a essas URLs
-                .requestMatchers("/", "/login", "/login-error", "/clientes/cadastrar", "/clientes/salvar").permitAll()
-                .requestMatchers("/css/**", "/js/**", "/image/**", "/webjars/**").permitAll()
-                // Qualquer outra requisição precisa de autenticação
+                .requestMatchers("/", "/login", "/login-error", "/error", "/acesso-negado").permitAll()
+                .requestMatchers("/clientes/cadastrar", "/clientes/salvar").permitAll()
+                .requestMatchers("/webjars/**", "/css/**", "/js/**", "/image/**").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/veiculos/**").hasRole("STORE")
+                .requestMatchers("/propostas/loja/**").hasRole("STORE")
+                .requestMatchers("/propostas/cliente/**").hasRole("CLIENT")
+                .requestMatchers("/propostas/fazer/**").hasRole("CLIENT")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
-                // Define a página de login customizada
                 .loginPage("/login")
-                // Define a URL para a qual o formulário de login aponta
-                .defaultSuccessUrl("/", true) // Redireciona para a home após o sucesso
-                .failureUrl("/login-error") // Redireciona em caso de falha
+                .defaultSuccessUrl("/login_success", true)
+                .failureUrl("/login?error")
+                .permitAll()
             )
             .logout(logout -> logout
-                .logoutSuccessUrl("/") // Redireciona para a home após o logout
+                .logoutSuccessUrl("/")
                 .permitAll()
-            );
+            )
+            .exceptionHandling(ex -> ex.accessDeniedPage("/acesso-negado"));
 
         return http.build();
     }

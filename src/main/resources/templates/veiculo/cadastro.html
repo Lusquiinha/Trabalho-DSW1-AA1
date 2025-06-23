@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout-base(content = ~{::content})}">
+<body>
+<div th:fragment="content">
+    <h2>Cadastro de Veículo</h2>
+    <form th:action="@{/veiculos/salvar}" th:object="${veiculo}" method="post">
+         <div class="form-group mb-3">
+            <label>Placa</label>
+            <input type="text" class="form-control" th:field="*{placa}" required/>
+        </div>
+        <div class="form-group mb-3">
+            <label>Modelo</label>
+            <input type="text" class="form-control" th:field="*{modelo}" required/>
+        </div>
+        <div class="form-group mb-3">
+            <label>Chassi</label>
+            <input type="text" class="form-control" th:field="*{chassi}" required/>
+        </div>
+        <div class="form-group mb-3">
+            <label>Ano</label>
+            <input type="number" class="form-control" th:field="*{ano}" required/>
+        </div>
+         <div class="form-group mb-3">
+            <label>Quilometragem</label>
+            <input type="number" class="form-control" th:field="*{quilometragem}" required/>
+        </div>
+        <div class="form-group mb-3">
+            <label>Descrição</label>
+            <textarea class="form-control" th:field="*{descricao}" required></textarea>
+        </div>
+        <div class="form-group mb-3">
+            <label>Valor</label>
+            <input type="number" step="0.01" class="form-control" th:field="*{valor}" required/>
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar Veículo</button>
+    </form>
+</div>
+</body>
+</html>

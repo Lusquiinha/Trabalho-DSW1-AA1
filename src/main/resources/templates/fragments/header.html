@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+    <header th:fragment="header">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" th:href="@{/}">Concessionária DSW</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item" sec:authorize="isAnonymous()">
+                            <a class="nav-link" th:href="@{/login}">Login</a>
+                        </li>
+                        <li class="nav-item" sec:authorize="isAnonymous()">
+                            <a class="nav-link" th:href="@{/clientes/cadastrar}">Cadastre-se</a>
+                        </li>
+
+                        <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                            <a class="nav-link" th:href="@{/admin/home}">Painel Admin</a>
+                        </li>
+
+                        <li class="nav-item" sec:authorize="hasRole('ROLE_LOJA')">
+                            <a class="nav-link" th:href="@{/veiculos/listar}">Meus Veículos</a>
+                        </li>
+                         <li class="nav-item" sec:authorize="hasRole('ROLE_LOJA')">
+                            <a class="nav-link" th:href="@{/propostas/loja}">Propostas Recebidas</a>
+                        </li>
+
+                        <li class="nav-item" sec:authorize="hasRole('ROLE_CLIENTE')">
+                            <a class="nav-link" th:href="@{/propostas/cliente}">Minhas Propostas</a>
+                        </li>
+
+                        <li class="nav-item" sec:authorize="isAuthenticated()">
+                            <form th:action="@{/logout}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-link nav-link">Logout</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+</body>
+</html>

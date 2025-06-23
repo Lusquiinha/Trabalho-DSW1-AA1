@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(title = 'Página Inicial', content = ~{::content})}">
+<body>
+<div th:fragment="content">
+    <h1>Painel do Administrador</h1>
+    <p>Bem-vindo, admin! Utilize o menu de navegação para gerenciar o sistema.</p>
+    <div class="list-group">
+      <a th:href="@{/admin/clientes}" class="list-group-item list-group-item-action">Gerenciar Clientes</a>
+      <a th:href="@{/admin/lojas}" class="list-group-item list-group-item-action">Gerenciar Lojas</a>
+    </div>
+</div>
+</body>
+</html>
