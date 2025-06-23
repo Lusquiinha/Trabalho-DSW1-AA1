@@ -16,4 +16,7 @@ public interface IPropostaService {
 
     // Apoio ao Requisito R8
     List<Proposta> buscarTodosPorLoja(Loja loja);
+
+    void atualizarStatus(Long id, String status, String contraProposta, String linkReuniao);
+
 }

@@ -1,6 +1,7 @@
 package dsw.concessionaria.service.impl;
 
 import dsw.concessionaria.dao.PropostaDAO;
+import dsw.concessionaria.service.spec.IEmailService;
 import dsw.concessionaria.domain.Proposta;
 import dsw.concessionaria.domain.Cliente;
 import dsw.concessionaria.domain.Loja;
@@ -20,6 +21,52 @@ public class PropostaServiceImpl implements IPropostaService {
 
     @Autowired
     private PropostaDAO propostaDAO;
+
+    @Autowired
+    private IEmailService emailService; // Injetar o serviço de email
+
+     @Override
+    public void atualizarStatus(Long id, String status, String contraProposta, String linkReuniao) {
+        Proposta proposta = propostaDAO.findById(id).orElseThrow(() -> new RuntimeException("Proposta não encontrada!"));
+
+        // Atualiza o status
+        if ("ACEITO".equals(status)) {
+            proposta.setStatus(StatusProposta.ACEITO);
+        } else if ("NAO_ACEITO".equals(status)) {
+            proposta.setStatus(StatusProposta.NAO_ACEITO);
+        } else {
+            return; // Não faz nada se o status for inválido
+        }
+
+        propostaDAO.save(proposta);
+        
+        // Envia o e-mail de notificação
+        notificarCliente(proposta, contraProposta, linkReuniao);
+    }
+
+    private void notificarCliente(Proposta proposta, String contraProposta, String linkReuniao) {
+        String destinatario = proposta.getCliente().getEmail();
+        String assunto = "Atualização sobre sua proposta para o veículo " + proposta.getVeiculo().getModelo();
+        String corpo;
+
+        if (proposta.getStatus() == StatusProposta.ACEITO) {
+            corpo = String.format(
+                "Olá %s,\n\nSua proposta foi ACEITA!\n\nDetalhes para a reunião:\n%s\nLink para a videoconferência: %s\n\nAtenciosamente,\n%s",
+                proposta.getCliente().getNome(),
+                linkReuniao, // No requisito, o link deveria estar aqui, mas usamos um campo geral.
+                linkReuniao, // R24
+                proposta.getVeiculo().getLoja().getNome()
+            );
+        } else { // NÃO ACEITO
+            corpo = String.format("Olá %s,\n\nSua proposta para o veículo %s infelizmente não foi aceita.", proposta.getCliente().getNome(), proposta.getVeiculo().getModelo());
+            if (contraProposta != null && !contraProposta.isEmpty()) {
+                corpo += "\n\nTemos uma contra-proposta para você:\n" + contraProposta; // R23
+            }
+            corpo += "\n\nAtenciosamente,\n" + proposta.getVeiculo().getLoja().getNome();
+        }
+        
+        emailService.enviarEmail(destinatario, assunto, corpo);
+    }
 
     @Override
     public void salvar(Proposta proposta) {
