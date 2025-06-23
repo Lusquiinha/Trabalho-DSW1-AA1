@@ -35,12 +35,15 @@
             </div>
             <div class="form-group mb-3">
                 <label for="cpf" th:text="#{admin.cliente.cadastro.cpf.label}">CPF</label>
-                <input type="text" class="form-control" th:field="*{cpf}" required/>
+                <!-- <input type="text" class="form-control" th:field="*{cpf}" required/> -->
+                <input type="text" class="form-control cpf-mask" th:field="*{cpf}" required/>
                 <div class="text-danger" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></div>
             </div>
             <div class="form-group mb-3">
                 <label for="telefone" th:text="#{admin.cliente.cadastro.telefone.label}">Telefone</label>
-                <input type="tel" class="form-control" th:field="*{telefone}" required/>
+                <!-- <input type="tel" class="form-control" th:field="*{telefone}" required/> -->
+                <input type="tel" class="form-control phone-mask" th:field="*{telefone}" required/>
+
             </div>
             <div class="form-group mb-3">
                 <label for="sexo" th:text="#{admin.cliente.cadastro.sexo.label}">Sexo</label>

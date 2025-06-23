@@ -10,6 +10,10 @@
 <body>
     <header th:replace="~{fragments/header :: header}"></header>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script th:src="@{/js/script.js}"></script>
+
     <main class="container mt-4">
         <div th:replace="~{fragments/alert :: alert}"></div>
         

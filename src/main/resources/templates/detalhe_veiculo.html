@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="${veiculo.modelo}"></title>
+</head>
+<body>
+    <section layout:fragment="content">
+        <div class="row">
+            <div class="col-md-7">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Galeria de Fotos</h5>
+                        <p class="text-muted">(A funcionalidade de upload e exibição de imagens será implementada aqui)</p>
+                        <img src="https://via.placeholder.com/600x400.png?text=Foto+do+Veículo" class="img-fluid" alt="Foto principal do veículo">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <h2 th:text="${veiculo.modelo}">Modelo do Veículo</h2>
+                <h4 class="text-muted" th:text="'Ano: ' + ${veiculo.ano}">Ano</h4>
+                <hr>
+                <h3 class="text-success fw-bold mt-3" th:text="'R$ ' + ${#numbers.formatDecimal(veiculo.valor, 1, 'POINT', 2, 'COMMA')}">R$ 90.000,00</h3>
+                <p class="mt-3">
+                    <strong>Vendido por:</strong> 
+                    <span th:text="${veiculo.loja.nome}">Nome da Loja</span>
+                </p>
+                
+                <div class="d-grid gap-2 mt-4">
+                     <a th:href="@{/propostas/fazer/{id}(id=${veiculo.id})}" class="btn btn-success btn-lg" th:text="#{home.veiculos.proposta.botao}">Fazer Proposta</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3>Descrição</h3>
+                <p th:text="${veiculo.descricao}"></p>
+                <hr>
+                <h3>Detalhes Técnicos</h3>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Placa:</strong> <span th:text="${veiculo.placa}"></span></li>
+                    <li class="list-group-item"><strong>Chassi:</strong> <span th:text="${veiculo.chassi}"></span></li>
+                    <li class="list-group-item"><strong>Quilometragem:</strong> <span th:text="${#numbers.formatInteger(veiculo.quilometragem, 1, 'POINT')} + ' km'"></span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

@@ -25,19 +25,23 @@
             <div th:if="${veiculos == null || veiculos.isEmpty()}" class="alert alert-info" th:text="#{home.veiculos.nenhum}">
                 Nenhum veículo encontrado.
             </div>
+            
             <div th:each="veiculo : ${veiculos}" class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title" th:text="${veiculo.modelo}">Modelo do Veículo</h5>
-                        <p class="card-text" th:text="${veiculo.descricao}">Descrição do veículo.</p>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item" th:text="'Ano: ' + ${veiculo.ano}">Ano</li>
-                            <li class="list-group-item" th:text="'Km: ' + ${veiculo.quilometragem}">Km</li>
-                            <li class="list-group-item fw-bold" th:text="'R$ ' + ${#numbers.formatDecimal(veiculo.valor, 1, 'POINT', 2, 'COMMA')}">Valor</li>
-                        </ul>
-                        <a th:href="@{/propostas/fazer/{id}(id=${veiculo.id})}" class="btn btn-success mt-3" th:text="#{home.veiculos.proposta.botao}">Fazer Proposta</a>
+                
+                <a th:href="@{/veiculo/{id}(id=${veiculo.id})}" class="text-decoration-none text-dark">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${veiculo.modelo}">Modelo do Veículo</h5>
+                            <p class="card-subtitle mb-2 text-muted" th:text="'Vendido por: ' + ${veiculo.loja.nome}"></p>
+                            <p class="card-text" th:text="${veiculo.descricao}">Descrição do veículo.</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item" th:text="'Ano: ' + ${veiculo.ano}">Ano</li>
+                                <li class="list-group-item" th:text="'Km: ' + ${veiculo.quilometragem}">Km</li>
+                                <li class="list-group-item fw-bold" th:text="'R$ ' + ${#numbers.formatDecimal(veiculo.valor, 1, 'POINT', 2, 'COMMA')}">Valor</li>
+                            </ul>
+                            </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </section>
