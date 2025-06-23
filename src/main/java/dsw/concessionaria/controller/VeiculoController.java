@@ -6,6 +6,9 @@ import dsw.concessionaria.domain.Imagem; // IMPORTAR
 import dsw.concessionaria.security.MyUserDetails; // IMPORTAR
 import dsw.concessionaria.service.spec.IVeiculoService;
 import jakarta.validation.Valid;
+
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile; 
 // import org.springframework.web.multipart.MultipartFile; //seria utilizado para imagens, mas não está implementado
 
 
@@ -54,7 +59,7 @@ public class VeiculoController {
     public String salvar(@Valid Veiculo veiculo, BindingResult result, 
                      @AuthenticationPrincipal MyUserDetails userDetails, 
                      RedirectAttributes attr
-                    //  ,@RequestParam("imagens") MultipartFile[] imagens
+                     ,@RequestParam("imagens") MultipartFile[] imagens
                      ) {
 
     // Este bloco irá verificar e imprimir os erros no console
@@ -74,21 +79,24 @@ public class VeiculoController {
     veiculo.setLoja(lojaLogada);
 
     veiculoService.salvar(veiculo);
-
+    if(imagens.length > 10){
+        return "veiculo/cadastro";
+    }
     // Salvar as imagens associadas ao veículo
-    // for (MultipartFile imagem : imagens) {
-    //     if (!imagem.isEmpty()) {
-    //         try {
-    //             Imagem novaImagem = new Imagem();
-    //             novaImagem.setNomeArquivo(imagem.getOriginalFilename());
-    //             novaImagem.setDados(imagem.getBytes()); // Salva os bytes da imagem
-    //             novaImagem.setVeiculo(veiculo);
-    //             veiculoService.salvarImagem(novaImagem);
-    //         } catch (IOException e) {
-    //             throw new RuntimeException("Erro ao processar imagem: " + e.getMessage());
-    //         }
-    //     }
-    // }
+    System.out.println(imagens.length + " imagens recebidas para o veículo: " + veiculo.getModelo());
+    for (MultipartFile imagem : imagens) {
+        if (!imagem.isEmpty()) {
+            try {
+                Imagem novaImagem = new Imagem();
+                novaImagem.setNomeArquivo(imagem.getOriginalFilename());
+                novaImagem.setDados(imagem.getBytes()); // Salva os bytes da imagem
+                novaImagem.setVeiculo(veiculo);
+                veiculoService.salvarImagem(novaImagem);
+            } catch (IOException e) {
+                throw new RuntimeException("Erro ao processar imagem: " + e.getMessage());
+            }
+        }
+    }
 
     attr.addFlashAttribute("sucesso", "Veículo cadastrado com sucesso.");
     return "redirect:/veiculos/listar";
@@ -122,11 +130,11 @@ public class VeiculoController {
     }
     
 
-     @PostMapping("/editar")
+    @PostMapping("/editar")
     public String editar(@Valid Veiculo veiculo, BindingResult result, 
                      @AuthenticationPrincipal MyUserDetails userDetails, 
                      RedirectAttributes attr
-                    //  ,@RequestParam("imagens") MultipartFile[] imagens
+                    ,@RequestParam("imagens") MultipartFile[] imagens
                      ) {
 
     // Este bloco irá verificar e imprimir os erros no console
@@ -148,21 +156,26 @@ public class VeiculoController {
     veiculoService.salvar(veiculo);
 
     // Salvar as imagens associadas ao veículo
-    // for (MultipartFile imagem : imagens) {
-    //     if (!imagem.isEmpty()) {
-    //         try {
-    //             Imagem novaImagem = new Imagem();
-    //             novaImagem.setNomeArquivo(imagem.getOriginalFilename());
-    //             novaImagem.setDados(imagem.getBytes()); // Salva os bytes da imagem
-    //             novaImagem.setVeiculo(veiculo);
-    //             veiculoService.salvarImagem(novaImagem);
-    //         } catch (IOException e) {
-    //             throw new RuntimeException("Erro ao processar imagem: " + e.getMessage());
-    //         }
-    //     }
-    // }
+    if(imagens.length > 10){
+        return "veiculo/cadastro";
+    }
+    System.out.println(imagens.length + " imagens recebidas para o veículo: " + veiculo.getModelo());
+    for (MultipartFile imagem : imagens) {
+        if (!imagem.isEmpty()) {
+            try {
+                Imagem novaImagem = new Imagem();
+                novaImagem.setNomeArquivo(imagem.getOriginalFilename());
+                novaImagem.setDados(imagem.getBytes()); // Salva os bytes da imagem
+                novaImagem.setVeiculo(veiculo);
+                veiculoService.salvarImagem(novaImagem);
 
-    attr.addFlashAttribute("sucesso", "Veículo cadastrado com sucesso.");
+            } catch (IOException e) {
+                throw new RuntimeException("Erro ao processar imagem: " + e.getMessage());
+            }
+        }
+    }
+
+    attr.addFlashAttribute("sucesso", "Veículo atualizado com sucesso.");
     return "redirect:/veiculos/listar";
 }
 
