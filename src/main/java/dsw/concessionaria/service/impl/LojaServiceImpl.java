@@ -29,6 +29,9 @@ public class LojaServiceImpl implements ILojaService {
             String senhaCriptografada = passwordEncoder.encode(loja.getPassword());
             loja.setPassword(senhaCriptografada);
         }
+        if (loja.getUsername() == null){
+            loja.setUsername(loja.getEmail());
+        }
         
         lojaDAO.save(loja);
     }

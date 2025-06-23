@@ -10,7 +10,8 @@
     <h2 th:if="${loja.id == null}" th:text="#{admin.loja.cadastro.novo}">Cadastro de Nova Loja</h2>
     <h2 th:unless="${loja.id == null}" th:text="#{admin.loja.cadastro.editar}">Edição de Loja</h2>
     <hr>
-    <form th:action="@{/admin/lojas/salvar}" th:object="${loja}" method="post">
+    <form th:action="${loja.id == null} ? @{/admin/lojas/salvar} : @{/admin/lojas/editar}" 
+    th:object="${loja}" method="post">
         <input type="hidden" th:field="*{id}" />
         <div class="form-group mb-3">
             <label th:text="#{admin.loja.cadastro.nome.label}">Nome da Loja</label>

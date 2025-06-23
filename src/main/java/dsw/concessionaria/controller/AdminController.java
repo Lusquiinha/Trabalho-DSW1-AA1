@@ -52,6 +52,17 @@ public class AdminController {
         return "admin/loja/cadastro";
     }
 
+    @PostMapping("/lojas/editar")
+    public String editarLoja(@Valid Loja loja, BindingResult result, RedirectAttributes attr) {
+        if (result.getFieldErrorCount() > 3) {
+            System.out.println("Erro de validação: " + result.getFieldErrorCount());
+            return "admin/loja/cadastro";
+        }
+        lojaService.salvar(loja);
+        attr.addFlashAttribute("sucesso", "Loja salva com sucesso.");
+        return "redirect:/admin/lojas";
+    }
+    
     @PostMapping("/lojas/salvar")
     public String salvarLoja(@Valid Loja loja, BindingResult result, RedirectAttributes attr) {
         if (result.hasErrors()) {
@@ -100,6 +111,15 @@ public class AdminController {
         return "redirect:/admin/clientes";
     }
 
+    @PostMapping("/clientes/editar")
+    public String editarCliente(@Valid Cliente cliente, BindingResult result, RedirectAttributes attr) {
+        if (result.getFieldErrorCount() > 2) {
+            return "admin/cliente/cadastro";
+        }
+        clienteService.salvar(cliente);
+        attr.addFlashAttribute("sucesso", "Cliente salvo com sucesso.");
+        return "redirect:/admin/clientes";
+    }
 
     @GetMapping("/clientes/excluir/{id}")
     public String excluirCliente(@PathVariable("id") Long id, RedirectAttributes attr) {
