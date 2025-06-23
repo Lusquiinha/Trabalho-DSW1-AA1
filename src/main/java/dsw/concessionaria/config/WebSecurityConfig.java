@@ -37,14 +37,21 @@ public class WebSecurityConfig {
         http
             .authenticationProvider(authenticationProvider())
             .authorizeHttpRequests(authz -> authz
+                // URLs Públicas
                 .requestMatchers("/", "/login", "/login-error", "/error", "/acesso-negado").permitAll()
                 .requestMatchers("/clientes/cadastrar", "/clientes/salvar").permitAll()
                 .requestMatchers("/webjars/**", "/css/**", "/js/**", "/image/**").permitAll()
+
+                // URLs de ADMIN
                 .requestMatchers("/admin/**").hasRole("ADMIN")
+                
+                // URLs de LOJA
                 .requestMatchers("/veiculos/**").hasRole("STORE")
-                .requestMatchers("/propostas/loja/**").hasRole("STORE")
-                .requestMatchers("/propostas/cliente/**").hasRole("CLIENT")
-                .requestMatchers("/propostas/fazer/**").hasRole("CLIENT")
+
+                // URLs de CLIENTE
+                // Corrigido para proteger apenas o que já existe no PropostaController
+                .requestMatchers("/propostas/fazer/**", "/propostas/salvar").hasRole("CLIENT")
+                
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

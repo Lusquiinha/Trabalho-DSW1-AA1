@@ -45,7 +45,7 @@ public class Veiculo extends AbstractEntity<Long> {
     @Column(nullable = false, columnDefinition = "DECIMAL(10, 2) DEFAULT 0.0")
     private BigDecimal valor; // Requisito: valor 
 
-    @NotNull(message = "{NotNull.veiculo.loja}")
+    // @NotNull(message = "{NotNull.veiculo.loja}")
     @ManyToOne
     @JoinColumn(name = "loja_id")
     private Loja loja; // Requisito: CNPJ da loja, implementado como uma relação 

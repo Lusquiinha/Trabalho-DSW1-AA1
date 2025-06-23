@@ -1,31 +1,47 @@
 <!DOCTYPE html>
 <html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout :: layout-base(content = ~{::content})}">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Gerenciamento de Clientes</title>
+</head>
 <body>
-<div th:fragment="content">
-    <h2>Lista de Clientes</h2>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>CPF</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="cliente : ${clientes}">
-                <td th:text="${cliente.id}"></td>
-                <td th:text="${cliente.nome}"></td>
-                <td th:text="${cliente.email}"></td>
-                <td th:text="${cliente.cpf}"></td>
-                <td>
-                    <a th:href="@{/admin/clientes/excluir/{id}(id=${cliente.id})}" class="btn btn-danger btn-sm">Excluir</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+    <section layout:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Lista de Clientes</h2>
+            <a th:href="@{/admin/clientes/cadastrar}" class="btn btn-primary">Cadastrar Novo Cliente</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>CPF</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${clientes.isEmpty()}">
+                        <td colspan="5" class="text-center">Nenhum cliente cadastrado.</td>
+                    </tr>
+                    <tr th:each="cliente : ${clientes}">
+                        <td th:text="${cliente.id}"></td>
+                        <td th:text="${cliente.nome}"></td>
+                        <td th:text="${cliente.email}"></td>
+                        <td th:text="${cliente.cpf}"></td>
+                        <td class="text-center">
+                            <a th:href="@{/admin/clientes/editar/{id}(id=${cliente.id})}" class="btn btn-secondary btn-sm">Editar</a>
+                            <a th:href="@{/admin/clientes/excluir/{id}(id=${cliente.id})}" 
+                               class="btn btn-danger btn-sm"
+                               onclick="return confirm('Tem certeza que deseja excluir este cliente?');">Excluir</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 </body>
 </html>
