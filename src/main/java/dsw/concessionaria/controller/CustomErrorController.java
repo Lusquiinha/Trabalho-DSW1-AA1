@@ -28,7 +28,6 @@ public class CustomErrorController implements ErrorController {
                  model.addAttribute("errorCode", "500");
             }
             else if(statusCode == HttpStatus.FORBIDDEN.value()) {
-                // Redireciona para a página de acesso negado que já criamos
                 return "redirect:/acesso-negado";
             } else {
                  errorMsg = "Ocorreu um erro inesperado.";
@@ -37,6 +36,6 @@ public class CustomErrorController implements ErrorController {
         }
         
         model.addAttribute("errorMessage", errorMsg);
-        return "error"; // -> /src/main/resources/templates/error.html
+        return "error";
     }
 }

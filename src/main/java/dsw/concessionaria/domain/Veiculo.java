@@ -1,5 +1,7 @@
 package dsw.concessionaria.domain;
 
+import dsw.concessionaria.validation.UniquePlaca;
+import dsw.concessionaria.validation.UniqueChassi;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +13,7 @@ import java.util.List;
 @Entity
 public class Veiculo extends AbstractEntity<Long> {
 
+    @UniquePlaca 
     @NotBlank(message = "{NotBlank.veiculo.placa}")
     @Column(nullable = false, length = 8, unique = true)
     private String placa; // Requisito: placa 
@@ -19,6 +22,7 @@ public class Veiculo extends AbstractEntity<Long> {
     @Column(nullable = false)
     private String modelo; // Requisito: modelo 
 
+    @UniqueChassi
     @NotBlank(message = "{NotBlank.veiculo.chassi}")
     @Column(nullable = false, length = 17, unique = true)
     private String chassi; // Requisito: chassi 
@@ -53,7 +57,7 @@ public class Veiculo extends AbstractEntity<Long> {
     public Veiculo() {
     }
 
-    // Getters e Setters para todos os campos
+    // Getters e Setters para todos os campos (sem alteração)
     public String getPlaca() {
         return placa;
     }

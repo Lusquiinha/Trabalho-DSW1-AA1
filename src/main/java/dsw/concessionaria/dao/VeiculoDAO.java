@@ -12,6 +12,10 @@ public interface VeiculoDAO extends JpaRepository<Veiculo, Long> {
 
     // Método para o Requisito R6: Listagem de todos os veículos de uma loja 
     List<Veiculo> findAllByLoja(Loja loja);
+    Veiculo findByPlaca(String placa);
+    Veiculo findByChassi(String chassi);
+
+
 
     // Método para o Requisito R4: Filtrar os veículos por modelo 
     List<Veiculo> findAllByModeloContainingIgnoreCase(String modelo);

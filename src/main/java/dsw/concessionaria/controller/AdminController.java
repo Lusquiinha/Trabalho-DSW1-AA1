@@ -31,7 +31,7 @@ public class AdminController {
     @GetMapping("/clientes")
     public String listarClientes(ModelMap model) {
         model.addAttribute("clientes", clienteService.buscarTodos());
-        return "admin/cliente/lista"; // -> .../templates/admin/cliente/lista.html
+        return "admin/cliente/lista"; 
     }
 
     @GetMapping("/clientes/excluir/{id}")
@@ -41,7 +41,6 @@ public class AdminController {
         return "redirect:/admin/clientes";
     }
 
-    // --- Gestão de Lojas (R2) ---
     @GetMapping("/lojas")
     public String listarLojas(ModelMap model) {
         model.addAttribute("lojas", lojaService.buscarTodos());
