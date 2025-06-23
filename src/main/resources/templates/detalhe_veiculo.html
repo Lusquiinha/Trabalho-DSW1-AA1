@@ -12,8 +12,11 @@
                 <div class="card">
                     <div class="card-body text-center">
                         <h5 class="card-title">Galeria de Fotos</h5>
-                        <p class="text-muted">(A funcionalidade de upload e exibição de imagens será implementada aqui)</p>
-                        <img src="https://via.placeholder.com/600x400.png?text=Foto+do+Veículo" class="img-fluid" alt="Foto principal do veículo">
+                        <div class="row">
+                            <div th:each="foto : ${veiculo.fotos}" class="col-md-4 mb-2">
+                                <img th:src="@{/veiculos/imagem/{id}(id=${foto.id})}" alt="Imagem do veículo" class="img-thumbnail" style="width: 100%; height: auto;">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
