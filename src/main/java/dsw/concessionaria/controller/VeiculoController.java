@@ -2,7 +2,7 @@ package dsw.concessionaria.controller;
 
 import dsw.concessionaria.domain.Loja;
 import dsw.concessionaria.domain.Veiculo;
-import dsw.concessionaria.security.MyUserDetails; // IMPORTAR
+import dsw.concessionaria.security.MyUserDetails;
 import dsw.concessionaria.service.spec.IVeiculoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +18,24 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/veiculos")
-@PreAuthorize("hasRole('ROLE_STORE')")
+// A anotação foi corrigida para usar 'STORE', sem o prefixo 'ROLE_'.
+@PreAuthorize("hasRole('STORE')")
 public class VeiculoController {
 
     @Autowired
     private IVeiculoService veiculoService;
 
-
     @GetMapping("/listar")
     public String listar(ModelMap model, @AuthenticationPrincipal MyUserDetails userDetails) {
         
-        // Pegamos o objeto Loja diretamente do usuário autenticado.
-        // Isso é mais seguro e eficiente, pois não precisa de outra consulta ao banco.
         Loja lojaLogada = (Loja) userDetails.getUsuario();
+        
+        // ===================================================================
+        // ALTERAÇÃO ADICIONADA AQUI
+        // Enviamos o objeto da loja para a view, para que possamos usar
+        // dados como o nome da loja na página.
+        model.addAttribute("loja", lojaLogada);
+        // ===================================================================
         
         // R6: Lista todos os veículos da loja logada
         model.addAttribute("veiculos", veiculoService.buscarPorLoja(lojaLogada));
@@ -44,26 +49,18 @@ public class VeiculoController {
     }
 
     @PostMapping("/salvar")
-public String salvar(@Valid Veiculo veiculo, BindingResult result, @AuthenticationPrincipal MyUserDetails userDetails, RedirectAttributes attr) {
+    public String salvar(@Valid Veiculo veiculo, BindingResult result, @AuthenticationPrincipal MyUserDetails userDetails, RedirectAttributes attr) {
     
-    // Este bloco irá verificar e imprimir os erros no console
-    if (result.hasErrors()) {
-        System.out.println("=============================================");
-        System.out.println("### ERROS DE VALIDAÇÃO ENCONTRADOS ###");
-        // Itera sobre todos os erros e imprime os detalhes
-        result.getAllErrors().forEach(error -> {
-            System.out.println(error.toString());
-        });
-        System.out.println("=============================================");
-        return "veiculo/cadastro";
-    }
-    
-    // O resto do código só executa se não houver erros
-    Loja lojaLogada = (Loja) userDetails.getUsuario();
-    veiculo.setLoja(lojaLogada);
+        // Os logs de depuração foram removidos para deixar o código mais limpo.
+        if (result.hasErrors()) {
+            return "veiculo/cadastro";
+        }
+        
+        Loja lojaLogada = (Loja) userDetails.getUsuario();
+        veiculo.setLoja(lojaLogada);
 
-    veiculoService.salvar(veiculo);
-    attr.addFlashAttribute("sucesso", "Veículo cadastrado com sucesso.");
-    return "redirect:/veiculos/listar";
-}
+        veiculoService.salvar(veiculo);
+        attr.addFlashAttribute("sucesso", "Veículo cadastrado com sucesso.");
+        return "redirect:/veiculos/listar";
+    }
 }
