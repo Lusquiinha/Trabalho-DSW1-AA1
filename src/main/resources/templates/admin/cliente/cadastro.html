@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{admin.cliente.cadastro.titulo}">Gestão de Cliente</title>
+</head>
+<body>
+    <section layout:fragment="content">
+        <h2 th:if="${cliente.id == null}" th:text="#{admin.cliente.cadastro.novo}">Cadastro de Novo Cliente</h2>
+        <h2 th:unless="${cliente.id == null}" th:text="#{admin.cliente.cadastro.editar}">Edição de Cliente</h2>
+        <hr>
+        <form th:action="@{/admin/clientes/salvar}" th:object="${cliente}" method="post">
+            <input type="hidden" th:field="*{id}" />
+            <div class="form-group mb-3">
+                <label for="nome" th:text="#{admin.cliente.cadastro.nome.label}">Nome Completo</label>
+                <input type="text" class="form-control" th:field="*{nome}" required/>
+                <div class="text-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="username" th:text="#{admin.cliente.cadastro.username.label}">Nome de Usuário</label>
+                <input type="text" class="form-control" th:field="*{username}" required/>
+                <div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="email" th:text="#{admin.cliente.cadastro.email.label}">Email</label>
+                <input type="email" class="form-control" th:field="*{email}" required/>
+                <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="password" th:text="#{admin.cliente.cadastro.password.label}">Senha</label>
+                <input type="password" class="form-control" th:field="*{password}" th:required="${cliente.id == null}"/>
+                <small class="form-text text-muted" th:text="#{admin.cliente.cadastro.password.hint}">Deixe em branco para manter a senha atual (em caso de edição).</small>
+            </div>
+            <div class="form-group mb-3">
+                <label for="cpf" th:text="#{admin.cliente.cadastro.cpf.label}">CPF</label>
+                <input type="text" class="form-control" th:field="*{cpf}" required/>
+                <div class="text-danger" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"></div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="telefone" th:text="#{admin.cliente.cadastro.telefone.label}">Telefone</label>
+                <input type="tel" class="form-control" th:field="*{telefone}" required/>
+            </div>
+            <div class="form-group mb-3">
+                <label for="sexo" th:text="#{admin.cliente.cadastro.sexo.label}">Sexo</label>
+                <select class="form-control" th:field="*{sexo}">
+                    <option value="Masculino" th:text="#{admin.cliente.cadastro.sexo.masculino}">Masculino</option>
+                    <option value="Feminino" th:text="#{admin.cliente.cadastro.sexo.feminino}">Feminino</option>
+                    <option value="Outro" th:text="#{admin.cliente.cadastro.sexo.outro}">Outro</option>
+                </select>
+            </div>
+            <div class="form-group mb-3">
+                <label for="dataNascimento" th:text="#{admin.cliente.cadastro.dataNascimento.label}">Data de Nascimento</label>
+                <input type="date" class="form-control" th:field="*{dataNascimento}" required/>
+                <div class="text-danger" th:if="${#fields.hasErrors('dataNascimento')}" th:errors="*{dataNascimento}"></div>
+            </div>
+            <button type="submit" class="btn btn-primary" th:text="#{admin.cliente.cadastro.botao.salvar}">Salvar</button>
+            <a th:href="@{/admin/clientes}" class="btn btn-secondary" th:text="#{admin.cliente.cadastro.botao.cancelar}">Cancelar</a>
+        </form>
+    </section>
+</body>
+</html>

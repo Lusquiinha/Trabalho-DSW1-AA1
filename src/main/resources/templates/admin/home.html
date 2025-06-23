@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{admin.home.titulo}">Painel do Administrador</title>
+</head>
+<body>
+    <section layout:fragment="content">
+        <h1 th:text="#{admin.home.titulo}">Painel do Administrador</h1>
+        <p th:text="#{admin.home.bemvindo}">Bem-vindo, admin! Utilize o menu de navegação para gerenciar o sistema.</p>
+        <hr>
+        <div class="list-group">
+          <a th:href="@{/admin/clientes}" class="list-group-item list-group-item-action" th:text="#{admin.home.clientes}">Gerenciar Clientes</a>
+          <a th:href="@{/admin/lojas}" class="list-group-item list-group-item-action" th:text="#{admin.home.lojas}">Gerenciar Lojas</a>
+        </div>
+    </section>
+</body>
+</html>

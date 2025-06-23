@@ -1,63 +1,65 @@
 package dsw.concessionaria;
 
-import java.util.List;
-
+import dsw.concessionaria.domain.Cliente;
+import dsw.concessionaria.domain.Loja;
+import dsw.concessionaria.service.spec.IClienteService;
+import dsw.concessionaria.service.spec.ILojaService;
+import dsw.concessionaria.service.spec.IUsuarioService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import dsw.concessionaria.dao.ClientDAO;
-import dsw.concessionaria.dao.UsuarioDAO;
-import dsw.concessionaria.domain.Client;
-import dsw.concessionaria.domain.Usuario;
-import dsw.concessionaria.enums.UserRole;
-import dsw.concessionaria.service.ClientService;
-import dsw.concessionaria.service.UsuarioService;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import java.time.LocalDate;
 
 @SpringBootApplication
 public class ConcessionariaApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ConcessionariaApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ConcessionariaApplication.class, args);
+    }
 
-	@Bean
-	public CommandLineRunner demo(UsuarioService usuarioService, ClientService clientService) {
-		return (args) -> {
-			Usuario admin = new Usuario();
-			admin.setUsername("admin");
-			admin.setPassword(new BCryptPasswordEncoder().encode("admin"));
-			admin.setEmail("admin@admin.com");
-			admin.setRole(UserRole.ADMIN);
+    @Bean
+    public CommandLineRunner demo(IUsuarioService usuarioService, IClienteService clienteService, ILojaService lojaService) {
+        return (args) -> {
 
-			usuarioService.registerUsuarios(admin);
+            // 1. Cria o usuário ADMIN
+            // Este método já verifica se o admin existe antes de criar.
+            usuarioService.initAdminUser();
+            System.out.println("Verificação de usuário Admin concluída.");
 
-			Client client1 = new Client(
-				"cliente", 
-				"email@email.com",
-				new BCryptPasswordEncoder().encode("cliente123"),
-				"123.456.789-00",
-				"11987654321",
-				"Masculino",
-				"01/01/1990"
-			);
+            // 2. Cria um usuário CLIENTE de exemplo
+            if (clienteService.buscarPorCpf("111.111.111-11") == null) {
+                Cliente cliente = new Cliente();
+                cliente.setEmail("cliente@exemplo.com");
+                cliente.setUsername("cliente"); // Username para login
+                cliente.setPassword("cliente"); // Senha em texto plano
+                // O role CLIENT já é definido no construtor do Cliente
+                cliente.setNome("Cliente de Exemplo");
+                cliente.setCpf("111.111.111-11");
+                cliente.setTelefone("16999998888");
+                cliente.setSexo("Outro");
+                cliente.setDataNascimento(LocalDate.of(1995, 5, 20));
+                
+                clienteService.salvar(cliente);
+                System.out.println("Cliente de exemplo criado.");
+            }
+            
+            // 3. Cria um usuário LOJA de exemplo (BLOCO ADICIONADO)
+            if (lojaService.buscarPorCnpj("22.222.222/0001-22") == null) {
+                Loja loja = new Loja();
+                loja.setEmail("loja@exemplo.com");
+                // Como definimos, o username da loja será o CNPJ para garantir unicidade
+                loja.setUsername("22.222.222/0001-22");
+                loja.setPassword("loja"); // Senha em texto plano
+                // O role STORE já é definido no construtor da Loja
+                loja.setNome("Loja de Teste");
+                loja.setCnpj("22.222.222/0001-22");
+                loja.setDescricao("A melhor loja de veículos de teste da região.");
 
-			clientService.registerClient(client1);
-
-			List<Usuario> usuarios = usuarioService.getAllUsuarios();
-			List<Client> clients = clientService.getAllClients();
-			System.out.println("Usuários cadastrados:");
-			for (Usuario usuario : usuarios) {
-				System.out.println(usuario.toString());
-			}
-			System.out.println("Clientes cadastrados:");
-			for (Client client : clients) {
-				System.out.println(client.toString());
-			}
-		};
-	}
+                lojaService.salvar(loja);
+                System.out.println("Loja de exemplo criada.");
+            }
+        };
+    }
 }

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{proposta.avaliacao.titulo}">Avaliar Proposta</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <h2 th:text="#{proposta.avaliacao.titulo}">Avaliar Proposta</h2>
+    <hr>
+    <div class="card mb-4">
+        <div class="card-header" th:text="#{proposta.avaliacao.detalhes}">Detalhes da Proposta a ser Avaliada</div>
+        <div class="card-body">
+            <p><strong th:text="#{proposta.avaliacao.veiculo}">Veículo:</strong> <span th:text="${proposta.veiculo.modelo}"></span></p>
+            <p><strong th:text="#{proposta.avaliacao.cliente}">Cliente:</strong> <span th:text="${proposta.cliente.nome}"></span></p>
+            <p><strong th:text="#{proposta.avaliacao.valor.proposto}">Valor Proposto:</strong> <span th:text="'R$ ' + ${#numbers.formatDecimal(proposta.valor, 1, 'POINT', 2, 'COMMA')}"></span></p>
+            <p><strong th:text="#{proposta.avaliacao.condicoes}">Condições:</strong> <span th:text="${proposta.condicoesPagamento}"></span></p>
+        </div>
+    </div>
+
+    <form th:action="@{/propostas/avaliar}" method="post">
+        <input type="hidden" name="propostaId" th:value="${proposta.id}" />
+
+        <div class="form-group mb-3">
+            <label th:text="#{proposta.avaliacao.decisao}">Decisão:</label>
+            <div>
+                <input type="radio" name="status" value="ACEITO" id="status_aceito" class="form-check-input" onclick="toggleFields()"> <span th:text="#{proposta.avaliacao.aceitar}">Aceitar</span>
+                <input type="radio" name="status" value="NAO_ACEITO" id="status_recusado" class="form-check-input" onclick="toggleFields()"> <span th:text="#{proposta.avaliacao.nao.aceitar}">Não Aceitar</span>
+            </div>
+        </div>
+
+        <div id="campos_aceito" style="display:none;">
+            <div class="form-group mb-3">
+                <label for="linkReuniao" th:text="#{proposta.avaliacao.link.reuniao}">Detalhes e Link da Reunião</label>
+                <textarea id="linkReuniao" name="linkReuniao" class="form-control"></textarea>
+            </div>
+        </div>
+
+        <div id="campos_recusado" style="display:none;">
+            <div class="form-group mb-3">
+                <label for="contraProposta" th:text="#{proposta.avaliacao.contra.proposta}">Contra-proposta (opcional)</label>
+                <textarea id="contraProposta" name="contraProposta" class="form-control"></textarea>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" th:text="#{proposta.avaliacao.botao.salvar}">Salvar Avaliação</button>
+        <a th:href="@{/propostas/loja}" class="btn btn-secondary" th:text="#{proposta.avaliacao.botao.cancelar}">Cancelar</a>
+    </form>
+    
+    <script>
+        function toggleFields() {
+            var aceito = document.getElementById('status_aceito').checked;
+            document.getElementById('campos_aceito').style.display = aceito ? 'block' : 'none';
+            document.getElementById('campos_recusado').style.display = !aceito ? 'block' : 'none';
+        }
+    </script>
+</section>
+</body>
+</html>

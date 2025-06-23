@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{veiculo.lista.titulo}">Meus Veículos</title>
+</head>
+<body>
+    <section layout:fragment="content">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 th:text="#{veiculo.lista.titulo}">Meus Veículos Cadastrados</h2>
+            <a th:href="@{/veiculos/cadastrar}" class="btn btn-primary" th:text="#{veiculo.lista.botao.cadastrar}">Cadastrar Novo Veículo</a>
+        </div>
+        <div class="row">
+            <div th:if="${veiculos == null || veiculos.isEmpty()}" class="alert alert-info" th:text="#{veiculo.lista.nenhum}">
+                Você ainda não cadastrou nenhum veículo.
+            </div>
+            <div th:each="veiculo : ${veiculos}" class="col-md-4 mb-4">
+                 <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${veiculo.modelo}">Modelo</h5>
+                        <p class="card-text" th:text="#{veiculo.cadastro.placa.label} + ': '  + ${veiculo.placa}">Placa</p>
+                        <p class="card-text fw-bold" th:text="'R$ ' + ${#numbers.formatDecimal(veiculo.valor, 1, 'POINT', 2, 'COMMA')}">Valor</p>
+                        <div th:each="foto : ${veiculo.fotos}" class="col-md-4 mb-4">
+                            <img th:src="@{/veiculos/imagem/{id}(id=${foto.id})}" alt="Imagem do veículo" width="100">
+                        </div>
+                        <a href="#" class="btn btn-secondary btn-sm" th:text="#{veiculo.lista.botao.editar}">Editar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
