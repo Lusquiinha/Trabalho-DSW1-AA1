@@ -24,7 +24,15 @@ public class ClienteServiceImpl implements IClienteService {
 public void salvar(Cliente cliente) {
 
     System.out.println("Senha original recebida. ");
-    String senhaCriptografada = passwordEncoder.encode(cliente.getPassword());
+    String senhaCriptografada;
+    if (cliente.getPassword() != null && !cliente.getPassword().isEmpty()) {
+        senhaCriptografada = passwordEncoder.encode(cliente.getPassword());
+    }
+    else{
+        senhaCriptografada = clientDAO.findById(cliente.getId())
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado!"))
+                .getPassword(); // Mantém a senha existente se não for fornecida uma nova
+    }
     cliente.setPassword(senhaCriptografada);
     System.out.println("Senha criptografada com sucesso.");
 
