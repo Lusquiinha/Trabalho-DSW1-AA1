@@ -3,20 +3,18 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Fazer Proposta</title>
+    <title th:text="#{proposta.formulario.titulo}">Fazer Proposta</title>
 </head>
 <body>
 <section layout:fragment="content">
-    <h2>Fazer Proposta</h2>
+    <h2 th:text="#{proposta.formulario.titulo}">Fazer Proposta</h2>
     <hr>
     <div class="card mb-3">
-        <div class="card-header">
-            Veículo de Interesse
-        </div>
+        <div class="card-header" th:text="#{proposta.formulario.veiculo.interesse}">Veículo de Interesse</div>
         <div class="card-body">
             <h5 class="card-title" th:text="${proposta.veiculo.modelo}">Modelo do Veículo</h5>
-            <p class="card-text" th:text="'Vendido por: ' + ${proposta.veiculo.loja.nome}">Nome da Loja</p>
-            <p class="card-text fw-bold" th:text="'Valor: R$ ' + ${#numbers.formatDecimal(proposta.veiculo.valor, 1, 'POINT', 2, 'COMMA')}">Valor</p>
+            <p class="card-text" th:text="#{proposta.formulario.vendido.por} + ' ' + ${proposta.veiculo.loja.nome}">Nome da Loja</p>
+            <p class="card-text fw-bold" th:text="#{proposta.formulario.valor} + 'R$ ' + ${#numbers.formatDecimal(proposta.veiculo.valor, 1, 'POINT', 2, 'COMMA')}">Valor</p>
         </div>
     </div>
 
@@ -24,18 +22,18 @@
         <input type="hidden" th:field="*{veiculo}" />
 
         <div class="form-group mb-3">
-            <label for="valor">Sua Proposta (R$)</label>
+            <label for="valor" th:text="#{proposta.formulario.sua.proposta}">Sua Proposta (R$)</label>
             <input type="text" class="form-control" th:field="*{valor}" required/>
             <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('valor')}" th:errors="*{valor}"></div>
         </div>
         <div class="form-group mb-3">
-            <label for="condicoesPagamento">Condições de Pagamento</label>
+            <label for="condicoesPagamento" th:text="#{proposta.formulario.condicoes.pagamento}">Condições de Pagamento</label>
             <textarea class="form-control" th:field="*{condicoesPagamento}" required></textarea>
             <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('condicoesPagamento')}" th:errors="*{condicoesPagamento}"></div>
         </div>
         
-        <button type="submit" class="btn btn-primary">Enviar Proposta</button>
-        <a th:href="@{/}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary" th:text="#{proposta.formulario.botao.enviar}">Enviar Proposta</button>
+        <a th:href="@{/}" class="btn btn-secondary" th:text="#{proposta.formulario.botao.cancelar}">Cancelar</a>
     </form>
 </section>
 </body>

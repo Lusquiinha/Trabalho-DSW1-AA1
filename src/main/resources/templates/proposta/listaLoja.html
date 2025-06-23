@@ -3,27 +3,27 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Propostas Recebidas</title>
+    <title th:text="#{proposta.lista.loja.titulo}">Propostas Recebidas</title>
 </head>
 <body>
     <section layout:fragment="content">
-        <h2>Propostas Recebidas</h2>
+        <h2 th:text="#{proposta.lista.loja.titulo}">Propostas Recebidas</h2>
         <hr>
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th>Veículo</th>
-                        <th>Cliente Proponente</th>
-                        <th>Valor da Proposta</th>
-                        <th>Data</th>
-                        <th>Status</th>
-                        <th class="text-center">Ações</th>
+                        <th th:text="#{proposta.lista.loja.veiculo}">Veículo</th>
+                        <th th:text="#{proposta.lista.loja.cliente}">Cliente Proponente</th>
+                        <th th:text="#{proposta.lista.loja.valor}">Valor da Proposta</th>
+                        <th th:text="#{proposta.lista.loja.data}">Data</th>
+                        <th th:text="#{proposta.lista.loja.status}">Status</th>
+                        <th class="text-center" th:text="#{proposta.lista.loja.acoes}">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:if="${propostas.isEmpty()}">
-                        <td colspan="6" class="text-center">Nenhuma proposta recebida até o momento.</td>
+                        <td colspan="6" class="text-center" th:text="#{proposta.lista.loja.nenhuma}">Nenhuma proposta recebida até o momento.</td>
                     </tr>
                     <tr th:each="proposta : ${propostas}">
                         <td th:text="${proposta.veiculo.modelo}"></td>
@@ -37,8 +37,9 @@
                             </span>
                         </td>
                         <td class="text-center">
-                        <a th:href="@{/propostas/avaliar/{id}(id=${proposta.id})}" th:if="${proposta.status.name() == 'ABERTO'}" 
-                            class="btn btn-primary btn-sm">Avaliar</a> </td>
+                            <a th:href="@{/propostas/avaliar/{id}(id=${proposta.id})}" th:if="${proposta.status.name() == 'ABERTO'}" 
+                               class="btn btn-primary btn-sm" th:text="#{proposta.lista.loja.botao.avaliar}">Avaliar</a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
