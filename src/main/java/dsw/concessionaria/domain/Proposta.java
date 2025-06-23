@@ -1,5 +1,93 @@
 package dsw.concessionaria.domain;
 
-public class Proposta {
-    
+import dsw.concessionaria.enums.StatusProposta;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Entity
+public class Proposta extends AbstractEntity<Long> {
+
+    @NotNull(message = "{NotNull.proposta.valor}")
+    @Positive(message = "{Positive.proposta.valor}")
+    @Column(nullable = false, columnDefinition = "DECIMAL(10, 2)")
+    private BigDecimal valor; // Requisito: valor da proposta 
+
+    @NotBlank(message = "{NotBlank.proposta.condicoesPagamento}")
+    @Column(nullable = false)
+    private String condicoesPagamento; // Requisito: condições de pagamento 
+
+    @Column(nullable = false)
+    private LocalDateTime dataProposta; // Requisito: data atual da proposta 
+
+    @NotNull(message = "{NotNull.proposta.status}")
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusProposta status; // Requisito: status da proposta (ABERTO, ACEITO, NAO_ACEITO) 
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente; // Requisito: proposta requer login do cliente 
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "veiculo_id")
+    private Veiculo veiculo; // Requisito: proposta é feita ao clicar em um veículo 
+
+    // Construtor vazio
+    public Proposta() {
+    }
+
+    // Getters e Setters
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+
+    public String getCondicoesPagamento() {
+        return condicoesPagamento;
+    }
+
+    public void setCondicoesPagamento(String condicoesPagamento) {
+        this.condicoesPagamento = condicoesPagamento;
+    }
+
+    public LocalDateTime getDataProposta() {
+        return dataProposta;
+    }
+
+    public void setDataProposta(LocalDateTime dataProposta) {
+        this.dataProposta = dataProposta;
+    }
+
+    public StatusProposta getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusProposta status) {
+        this.status = status;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Veiculo getVeiculo() {
+        return veiculo;
+    }
+
+    public void setVeiculo(Veiculo veiculo) {
+        this.veiculo = veiculo;
+    }
 }

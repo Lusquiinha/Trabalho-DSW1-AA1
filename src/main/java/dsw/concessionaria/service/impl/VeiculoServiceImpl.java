@@ -1,0 +1,53 @@
+package dsw.concessionaria.service.impl;
+
+import dsw.concessionaria.dao.VeiculoDAO;
+import dsw.concessionaria.domain.Loja;
+import dsw.concessionaria.domain.Veiculo;
+import dsw.concessionaria.service.spec.IVeiculoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional(readOnly = false)
+public class VeiculoServiceImpl implements IVeiculoService {
+
+    @Autowired
+    private VeiculoDAO veiculoDAO;
+
+    @Override
+    public void salvar(Veiculo veiculo) {
+        veiculoDAO.save(veiculo);
+    }
+
+    @Override
+    public void excluir(Long id) {
+        veiculoDAO.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Veiculo buscarPorId(Long id) {
+        return veiculoDAO.findById(id).orElse(null);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Veiculo> buscarTodos() {
+        return veiculoDAO.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Veiculo> buscarPorModelo(String modelo) {
+        return veiculoDAO.findAllByModeloContainingIgnoreCase(modelo);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Veiculo> buscarPorLoja(Loja loja) {
+        return veiculoDAO.findAllByLoja(loja);
+    }
+}
