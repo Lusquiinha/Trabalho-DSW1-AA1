@@ -14,35 +14,37 @@ public class Proposta extends AbstractEntity<Long> {
     @NotNull(message = "{NotNull.proposta.valor}")
     @Positive(message = "{Positive.proposta.valor}")
     @Column(nullable = false, columnDefinition = "DECIMAL(10, 2)")
-    private BigDecimal valor; // Requisito: valor da proposta 
+    private BigDecimal valor;
 
     @NotBlank(message = "{NotBlank.proposta.condicoesPagamento}")
     @Column(nullable = false)
-    private String condicoesPagamento; // Requisito: condições de pagamento 
+    private String condicoesPagamento;
 
+    // A anotação @NotNull foi removida daqui, pois a data é definida pelo servidor
     @Column(nullable = false)
-    private LocalDateTime dataProposta; // Requisito: data atual da proposta 
+    private LocalDateTime dataProposta;
 
-    @NotNull(message = "{NotNull.proposta.status}")
+    // A anotação @NotNull foi removida daqui, pois o status é definido pelo servidor
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private StatusProposta status; // Requisito: status da proposta (ABERTO, ACEITO, NAO_ACEITO) 
+    private StatusProposta status;
 
-    @NotNull
+    // A anotação @NotNull foi removida daqui, pois o cliente é definido pelo servidor
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    private Cliente cliente; // Requisito: proposta requer login do cliente 
+    private Cliente cliente;
 
+    // O veículo vem de um campo oculto no formulário, então mantemos a validação.
     @NotNull
     @ManyToOne
     @JoinColumn(name = "veiculo_id")
-    private Veiculo veiculo; // Requisito: proposta é feita ao clicar em um veículo 
+    private Veiculo veiculo;
 
     // Construtor vazio
     public Proposta() {
     }
 
-    // Getters e Setters
+    // Getters e Setters (sem alteração)
     public BigDecimal getValor() {
         return valor;
     }
