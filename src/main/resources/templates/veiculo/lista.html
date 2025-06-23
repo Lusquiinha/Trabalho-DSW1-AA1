@@ -24,8 +24,7 @@
                         <div th:each="foto : ${veiculo.fotos}" class="col-md-4 mb-4">
                             <img th:src="@{/veiculos/imagem/{id}(id=${foto.id})}" alt="Imagem do veículo" width="100">
                         </div>
-                        <a href="#" class="btn btn-secondary btn-sm" th:text="#{veiculo.lista.botao.editar}">Editar</a>
-                    </div>
+                        <a th:href="@{/veiculos/editar/{id}(id=${veiculo.id})}" class="btn btn-secondary btn-sm">Edit</a>                    </div>
                 </div>
             </div>
         </div>

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+
 
 @Controller
 @RequestMapping("/veiculos")
@@ -52,7 +52,7 @@ public class VeiculoController {
     }
 
     @PostMapping("/salvar")
-public String salvar(@Valid Veiculo veiculo, BindingResult result, 
+    public String salvar(@Valid Veiculo veiculo, BindingResult result, 
                      @AuthenticationPrincipal MyUserDetails userDetails, 
                      RedirectAttributes attr
                     //  ,@RequestParam("imagens") MultipartFile[] imagens
@@ -105,4 +105,66 @@ public String salvar(@Valid Veiculo veiculo, BindingResult result,
         }
         return ResponseEntity.notFound().build();
     }
+
+        /**
+     * Exibe o formulário de edição preenchido com os dados de um veículo existente.
+     * @param id O ID do veículo a ser editado (vindo da URL).
+     * @param model O objeto Model para enviar o veículo para a view.
+     * @return O caminho para a página de cadastro, que será reutilizada para edição.
+     */
+    @GetMapping("/editar/{id}")
+    public String formEditarVeiculo(@PathVariable("id") Long id, ModelMap model) {
+        // Busca o veículo pelo ID no banco de dados.
+        Veiculo veiculo = veiculoService.buscarPorId(id);
+        // Adiciona o veículo encontrado ao modelo.
+        model.addAttribute("veiculo", veiculo);
+        // Reutiliza a mesma página de cadastro para a edição.
+        return "veiculo/cadastro";
+    }
+    
+
+     @PostMapping("/editar")
+    public String editar(@Valid Veiculo veiculo, BindingResult result, 
+                     @AuthenticationPrincipal MyUserDetails userDetails, 
+                     RedirectAttributes attr
+                    //  ,@RequestParam("imagens") MultipartFile[] imagens
+                     ) {
+
+    // Este bloco irá verificar e imprimir os erros no console
+    if (result.getFieldErrorCount() > 2) {
+        System.out.println("=============================================");
+        System.out.println("### ERROS DE VALIDAÇÃO ENCONTRADOS ###");
+        // Itera sobre todos os erros e imprime os detalhes
+        result.getAllErrors().forEach(error -> {
+            System.out.println(error.toString());
+        });
+        System.out.println("=============================================");
+        return "veiculo/cadastro";
+    }
+    
+    // O resto do código só executa se não houver erros
+    Loja lojaLogada = (Loja) userDetails.getUsuario();
+    veiculo.setLoja(lojaLogada);
+
+    veiculoService.salvar(veiculo);
+
+    // Salvar as imagens associadas ao veículo
+    // for (MultipartFile imagem : imagens) {
+    //     if (!imagem.isEmpty()) {
+    //         try {
+    //             Imagem novaImagem = new Imagem();
+    //             novaImagem.setNomeArquivo(imagem.getOriginalFilename());
+    //             novaImagem.setDados(imagem.getBytes()); // Salva os bytes da imagem
+    //             novaImagem.setVeiculo(veiculo);
+    //             veiculoService.salvarImagem(novaImagem);
+    //         } catch (IOException e) {
+    //             throw new RuntimeException("Erro ao processar imagem: " + e.getMessage());
+    //         }
+    //     }
+    // }
+
+    attr.addFlashAttribute("sucesso", "Veículo cadastrado com sucesso.");
+    return "redirect:/veiculos/listar";
+}
+
 }
