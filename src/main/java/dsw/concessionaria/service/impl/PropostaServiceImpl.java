@@ -51,10 +51,9 @@ public class PropostaServiceImpl implements IPropostaService {
 
         if (proposta.getStatus() == StatusProposta.ACEITO) {
             corpo = String.format(
-                "Olá %s,\n\nSua proposta foi ACEITA!\n\nDetalhes para a reunião:\n%s\nLink para a videoconferência: %s\n\nAtenciosamente,\n%s",
+                "Olá %s,\n\nSua proposta foi ACEITA!\n\nDetalhes para a reunião:\n%s\n\nAtenciosamente,\n%s",
                 proposta.getCliente().getNome(),
                 linkReuniao, // No requisito, o link deveria estar aqui, mas usamos um campo geral.
-                linkReuniao, // R24
                 proposta.getVeiculo().getLoja().getNome()
             );
         } else { // NÃO ACEITO
