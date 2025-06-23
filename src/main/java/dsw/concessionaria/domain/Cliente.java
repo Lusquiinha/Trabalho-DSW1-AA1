@@ -14,25 +14,25 @@ import java.time.LocalDate;
 public class Cliente extends Usuario {
 
     @NotBlank(message = "{NotBlank.client.nome}")
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String nome;
 
     @UniqueCPF
     @NotBlank(message = "{NotBlank.client.cpf}")
-    @Column(nullable = false, length = 15, unique = true)
+    @Column(nullable = true, length = 15, unique = true)
     private String cpf;
 
     @NotBlank(message = "{NotBlank.client.telefone}")
-    @Column(nullable = false, length = 16)
+    @Column(nullable = true, length = 16)
     private String telefone;
 
     @NotBlank(message = "{NotBlank.client.sexo}")
-    @Column(nullable = false, length = 10)
+    @Column(nullable = true, length = 10)
     private String sexo;
 
     @NotNull(message = "{NotNull.client.dataNascimento}")
     @Past(message = "{Past.client.dataNascimento}")
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDate dataNascimento;
 
     // Construtor vazio para JPA

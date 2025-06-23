@@ -11,15 +11,15 @@ public class Loja extends Usuario {
 
     @UniqueCNPJ
     @NotBlank(message = "{NotBlank.loja.cnpj}")
-    @Column(nullable = false, length = 18, unique = true) 
+    @Column(nullable = true, length = 18, unique = true) 
     private String cnpj;
 
     @NotBlank(message = "{NotBlank.loja.nome}")
-    @Column(nullable = false) 
+    @Column(nullable = true) 
     private String nome;
 
     @NotBlank(message = "{NotBlank.loja.descricao}")
-    @Column(nullable = false, length = 256) 
+    @Column(nullable = true, length = 256) 
     private String descricao;
 
     public Loja() {
