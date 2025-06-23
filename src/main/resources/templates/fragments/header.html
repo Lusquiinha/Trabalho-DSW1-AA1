@@ -4,37 +4,39 @@
     <header th:fragment="header">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" th:href="@{/}">Concessionária DSW</a>
+                <a class="navbar-brand" th:href="@{/}" th:text="#{header.titulo}">Concessionária DSW</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item" sec:authorize="isAnonymous()">
-                            <a class="nav-link" th:href="@{/login}">Login</a>
+                        <li class="nav-item">
+                            <div>
+                                <a th:href="@{''(lang=pt)}"><img alt="#{header.lang.pt}" th:src="@{/image/Brasil.gif}" style="width: 30px;" /></a>
+                                <a th:href="@{''(lang=en)}"><img alt="#{header.lang.en}" th:src="@{/image/EUA.gif}" style="width: 30px;" /></a>
+                            </div>
                         </li>
                         <li class="nav-item" sec:authorize="isAnonymous()">
-                            <a class="nav-link" th:href="@{/clientes/cadastrar}">Cadastre-se</a>
+                            <a class="nav-link" th:href="@{/login}" th:text="#{header.login}">Login</a>
                         </li>
-
+                        <li class="nav-item" sec:authorize="isAnonymous()">
+                            <a class="nav-link" th:href="@{/clientes/cadastrar}" th:text="#{header.cadastro}">Cadastre-se</a>
+                        </li>
                         <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-                            <a class="nav-link" th:href="@{/admin/home}">Painel Admin</a>
+                            <a class="nav-link" th:href="@{/admin/home}" th:text="#{header.admin}">Painel Admin</a>
                         </li>
-
                         <li class="nav-item" sec:authorize="hasRole('ROLE_LOJA')">
-                            <a class="nav-link" th:href="@{/veiculos/listar}">Meus Veículos</a>
+                            <a class="nav-link" th:href="@{/veiculos/listar}" th:text="#{header.veiculos}">Meus Veículos</a>
                         </li>
-                         <li class="nav-item" sec:authorize="hasRole('ROLE_LOJA')">
-                            <a class="nav-link" th:href="@{/propostas/loja}">Propostas Recebidas</a>
+                        <li class="nav-item" sec:authorize="hasRole('ROLE_LOJA')">
+                            <a class="nav-link" th:href="@{/propostas/loja}" th:text="#{header.propostas.recebidas}">Propostas Recebidas</a>
                         </li>
-
                         <li class="nav-item" sec:authorize="hasRole('ROLE_CLIENTE')">
-                            <a class="nav-link" th:href="@{/propostas/cliente}">Minhas Propostas</a>
+                            <a class="nav-link" th:href="@{/propostas/cliente}" th:text="#{header.propostas.minhas}">Minhas Propostas</a>
                         </li>
-
                         <li class="nav-item" sec:authorize="isAuthenticated()">
                             <form th:action="@{/logout}" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-link nav-link">Logout</button>
+                                <button type="submit" class="btn btn-link nav-link" th:text="#{header.logout}">Logout</button>
                             </form>
                         </li>
                     </ul>

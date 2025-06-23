@@ -3,39 +3,37 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Gestão de Loja</title>
+    <title th:text="#{admin.loja.cadastro.titulo}">Gestão de Loja</title>
 </head>
 <body>
 <section layout:fragment="content">
-    <h2 th:if="${loja.id == null}">Cadastro de Nova Loja</h2>
-    <h2 th:unless="${loja.id == null}">Edição de Loja</h2>
+    <h2 th:if="${loja.id == null}" th:text="#{admin.loja.cadastro.novo}">Cadastro de Nova Loja</h2>
+    <h2 th:unless="${loja.id == null}" th:text="#{admin.loja.cadastro.editar}">Edição de Loja</h2>
     <hr>
     <form th:action="@{/admin/lojas/salvar}" th:object="${loja}" method="post">
         <input type="hidden" th:field="*{id}" />
-        
         <div class="form-group mb-3">
-            <label>Nome da Loja</label>
+            <label th:text="#{admin.loja.cadastro.nome.label}">Nome da Loja</label>
             <input type="text" class="form-control" th:field="*{nome}" required/>
         </div>
         <div class="form-group mb-3">
-            <label>CNPJ</label>
+            <label th:text="#{admin.loja.cadastro.cnpj.label}">CNPJ</label>
             <input type="text" class="form-control" th:field="*{cnpj}" required/>
         </div>
         <div class="form-group mb-3">
-            <label>Email de Login</label>
+            <label th:text="#{admin.loja.cadastro.email.label}">Email de Login</label>
             <input type="email" class="form-control" th:field="*{email}" required/>
         </div>
         <div class="form-group mb-3">
-            <label>Senha</label>
+            <label th:text="#{admin.loja.cadastro.password.label}">Senha</label>
             <input type="password" class="form-control" th:field="*{password}" th:required="${loja.id == null}"/>
-            <small class="form-text text-muted">Deixe em branco para manter a senha atual (em caso de edição).</small>
+            <small class="form-text text-muted" th:text="#{admin.loja.cadastro.password.hint}">Deixe em branco para manter a senha atual (em caso de edição).</small>
         </div>
         <div class="form-group mb-3">
-            <label>Descrição</label>
+            <label th:text="#{admin.loja.cadastro.descricao.label}">Descrição</label>
             <textarea class="form-control" th:field="*{descricao}" required></textarea>
         </div>
-        
-        <button type="submit" class="btn btn-primary">Salvar</button>
+        <button type="submit" class="btn btn-primary" th:text="#{admin.loja.cadastro.botao.salvar}">Salvar</button>
     </form>
 </section>
 </body>

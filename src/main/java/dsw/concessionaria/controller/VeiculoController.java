@@ -2,19 +2,27 @@ package dsw.concessionaria.controller;
 
 import dsw.concessionaria.domain.Loja;
 import dsw.concessionaria.domain.Veiculo;
+import dsw.concessionaria.domain.Imagem; // IMPORTAR
 import dsw.concessionaria.security.MyUserDetails; // IMPORTAR
 import dsw.concessionaria.service.spec.IVeiculoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/veiculos")
@@ -44,8 +52,12 @@ public class VeiculoController {
     }
 
     @PostMapping("/salvar")
-public String salvar(@Valid Veiculo veiculo, BindingResult result, @AuthenticationPrincipal MyUserDetails userDetails, RedirectAttributes attr) {
-    
+public String salvar(@Valid Veiculo veiculo, BindingResult result, 
+                     @AuthenticationPrincipal MyUserDetails userDetails, 
+                     RedirectAttributes attr
+                    //  ,@RequestParam("imagens") MultipartFile[] imagens
+                     ) {
+
     // Este bloco irá verificar e imprimir os erros no console
     if (result.hasErrors()) {
         System.out.println("=============================================");
@@ -63,7 +75,34 @@ public String salvar(@Valid Veiculo veiculo, BindingResult result, @Authenticati
     veiculo.setLoja(lojaLogada);
 
     veiculoService.salvar(veiculo);
+
+    // Salvar as imagens associadas ao veículo
+    // for (MultipartFile imagem : imagens) {
+    //     if (!imagem.isEmpty()) {
+    //         try {
+    //             Imagem novaImagem = new Imagem();
+    //             novaImagem.setNomeArquivo(imagem.getOriginalFilename());
+    //             novaImagem.setDados(imagem.getBytes()); // Salva os bytes da imagem
+    //             novaImagem.setVeiculo(veiculo);
+    //             veiculoService.salvarImagem(novaImagem);
+    //         } catch (IOException e) {
+    //             throw new RuntimeException("Erro ao processar imagem: " + e.getMessage());
+    //         }
+    //     }
+    // }
+
     attr.addFlashAttribute("sucesso", "Veículo cadastrado com sucesso.");
     return "redirect:/veiculos/listar";
 }
+
+    @GetMapping("/imagem/{id}")
+    public ResponseEntity<byte[]> exibirImagem(@PathVariable Long id) {
+        Imagem imagem = veiculoService.buscarImagemPorId(id);
+        if (imagem != null) {
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                    .body(imagem.getDados());
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
