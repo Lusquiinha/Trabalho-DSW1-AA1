@@ -81,4 +81,8 @@ public class Cliente extends Usuario {
     public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
+    @Override
+    public String toString() {
+    return "Cliente [" + super.toString() + ", nome=" + nome + ", cpf=" + cpf + ", telefone=" + telefone + ", sexo=" + sexo + ", dataNascimento=" + dataNascimento + "]";
+}
 }

@@ -27,11 +27,19 @@ public class ClienteController {
 
     @PostMapping("/salvar")
     public String salvar(@Valid Cliente cliente, BindingResult result, RedirectAttributes attr) {
+        System.out.println("--- CONTROLLER: TENTANDO SALVAR CLIENTE ---");
+        System.out.println("Dados recebidos do formulário: " + cliente.toString());
         if (result.hasErrors()) {
+            System.out.println("--- CONTROLLER: ERROS DE VALIDAÇÃO ENCONTRADOS ---");
+            // Imprime cada erro de validação no console
+            result.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
             return "cliente/cadastro"; // Se houver erros de validação, retorna para o formulário
         }
+            System.out.println("--- CONTROLLER: VALIDAÇÃO OK. CHAMANDO O SERVIÇO... ---");
 
         clienteService.salvar(cliente);
+            System.out.println("--- CONTROLLER: SERVIÇO EXECUTADO. REDIRECIONANDO... ---");
+
         attr.addFlashAttribute("sucesso", "Cadastro realizado com sucesso!");
         return "redirect:/login"; // Redireciona para a página de login após o cadastro
     }

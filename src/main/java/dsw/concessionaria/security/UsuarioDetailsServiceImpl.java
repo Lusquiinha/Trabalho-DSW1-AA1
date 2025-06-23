@@ -1,7 +1,7 @@
 package dsw.concessionaria.security;
 
+import dsw.concessionaria.dao.UsuarioDAO; // Importe o DAO
 import dsw.concessionaria.domain.Usuario;
-import dsw.concessionaria.service.spec.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,14 +12,24 @@ import org.springframework.stereotype.Service;
 public class UsuarioDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private IUsuarioService usuarioService;
+    private UsuarioDAO usuarioDAO;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario usuario = usuarioService.buscarPorEmail(email);
-
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        
+        // O parâmetro 'login' pode ser um e-mail OU um username
+        
+        // 1. Tenta buscar por e-mail primeiro
+        Usuario usuario = usuarioDAO.findByEmail(login);
+        
+        // 2. Se não achou por e-mail, tenta buscar por username
         if (usuario == null) {
-            throw new UsernameNotFoundException("Usuário não encontrado com o e-mail: " + email);
+            usuario = usuarioDAO.findByUsername(login);
+        }
+
+        // 3. Se não encontrou de nenhuma das formas, lança o erro
+        if (usuario == null) {
+            throw new UsernameNotFoundException("Usuário não encontrado: " + login);
         }
 
         return new MyUserDetails(usuario);

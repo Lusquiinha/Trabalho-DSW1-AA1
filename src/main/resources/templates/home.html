@@ -35,8 +35,7 @@
                             <li class="list-group-item" th:text="'Km: ' + ${veiculo.quilometragem}">Km</li>
                             <li class="list-group-item fw-bold" th:text="'R$ ' + ${#numbers.formatDecimal(veiculo.valor, 1, 'POINT', 2, 'COMMA')}">Valor</li>
                         </ul>
-                        <a href="#" class="btn btn-success mt-3">Ver Detalhes</a>
-                    </div>
+                    <a th:href="@{/propostas/fazer/{id}(id=${veiculo.id})}" class="btn btn-success mt-3">Fazer Proposta</a>                    </div>
                 </div>
             </div>
         </div>

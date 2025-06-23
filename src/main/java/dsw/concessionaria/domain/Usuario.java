@@ -5,11 +5,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import dsw.concessionaria.validation.UniqueUsername;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Usuario extends AbstractEntity<Long> {
 
+    @UniqueUsername
     @NotBlank
     @Column(nullable = false, length = 20, unique = true)
     private String username;

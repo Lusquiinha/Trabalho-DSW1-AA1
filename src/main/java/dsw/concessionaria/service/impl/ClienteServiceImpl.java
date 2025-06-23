@@ -21,13 +21,22 @@ public class ClienteServiceImpl implements IClienteService {
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
-    public void salvar(Cliente cliente) {
-        // Criptografa a senha antes de salvar o cliente
-        String senhaCriptografada = passwordEncoder.encode(cliente.getPassword());
-        cliente.setPassword(senhaCriptografada);
-        
+public void salvar(Cliente cliente) {
+
+    System.out.println("Senha original recebida. ");
+    String senhaCriptografada = passwordEncoder.encode(cliente.getPassword());
+    cliente.setPassword(senhaCriptografada);
+    System.out.println("Senha criptografada com sucesso.");
+
+    try {
+        System.out.println("--- SERVICE: EXECUTANDO clientDAO.save()... ---");
         clientDAO.save(cliente);
+        System.out.println("--- SERVICE: CLIENTE SALVO COM SUCESSO NO BANCO! ---");
+    } catch (Exception e) {
+        System.err.println("--- SERVICE: OCORREU UM ERRO AO SALVAR NO BANCO! ---");
+        e.printStackTrace(); // Imprime o erro completo do banco no console
     }
+}
 
     @Override
     public void excluir(Long id) {
