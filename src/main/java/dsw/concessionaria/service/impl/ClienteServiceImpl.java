@@ -42,7 +42,7 @@ public void salvar(Cliente cliente) {
         System.out.println("--- SERVICE: CLIENTE SALVO COM SUCESSO NO BANCO! ---");
     } catch (Exception e) {
         System.err.println("--- SERVICE: OCORREU UM ERRO AO SALVAR NO BANCO! ---");
-        e.printStackTrace(); // Imprime o erro completo do banco no console
+        e.printStackTrace(); 
     }
 }
 

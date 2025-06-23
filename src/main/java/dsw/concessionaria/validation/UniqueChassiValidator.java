@@ -18,7 +18,7 @@ public class UniqueChassiValidator implements ConstraintValidator<UniqueChassi, 
         if (veiculoDAO == null || chassi == null || chassi.trim().isEmpty()) {
             return true;
         }
-        // O método 'findByChassi' precisa ser adicionado ao VeiculoDAO
+        
         Veiculo veiculo = veiculoDAO.findByChassi(chassi);
         return veiculo == null;
     }

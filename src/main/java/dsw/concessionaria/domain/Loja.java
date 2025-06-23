@@ -23,7 +23,6 @@ public class Loja extends Usuario {
     private String descricao;
 
     public Loja() {
-        // ADICIONADO: Garante que toda nova loja tenha o papel correto.
         super.setRole(UserRole.STORE);
     }
     

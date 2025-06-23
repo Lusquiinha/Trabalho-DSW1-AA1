@@ -12,7 +12,7 @@ public class BigDecimalConversor implements Converter<String, BigDecimal> {
         if (source == null || source.trim().isEmpty()) {
             return null;
         }
-        // Remove caracteres não numéricos, exceto a vírgula
+  
         source = source.replace(",", ".");
         return new BigDecimal(Double.parseDouble(source));
     }

@@ -23,7 +23,7 @@ public class PropostaServiceImpl implements IPropostaService {
     private PropostaDAO propostaDAO;
 
     @Autowired
-    private IEmailService emailService; // Injetar o serviço de email
+    private IEmailService emailService; 
 
      @Override
     public void atualizarStatus(Long id, String status, String contraProposta, String linkReuniao) {
@@ -40,7 +40,6 @@ public class PropostaServiceImpl implements IPropostaService {
 
         propostaDAO.save(proposta);
         
-        // Envia o e-mail de notificação
         notificarCliente(proposta, contraProposta, linkReuniao);
     }
 
@@ -59,7 +58,7 @@ public class PropostaServiceImpl implements IPropostaService {
         } else { // NÃO ACEITO
             corpo = String.format("Olá %s,\n\nSua proposta para o veículo %s infelizmente não foi aceita.", proposta.getCliente().getNome(), proposta.getVeiculo().getModelo());
             if (contraProposta != null && !contraProposta.isEmpty()) {
-                corpo += "\n\nTemos uma contra-proposta para você:\n" + contraProposta; // R23
+                corpo += "\n\nTemos uma contra-proposta para você:\n" + contraProposta; 
             }
             corpo += "\n\nAtenciosamente,\n" + proposta.getVeiculo().getLoja().getNome();
         }

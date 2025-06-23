@@ -8,22 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LoginController {
 
-    /**
-     * Exibe a página de login customizada.
-     * @return O nome da view "login.html".
-     */
     @GetMapping("/login")
     public String login() {
         return "login";
     }
 
-    /**
-     * Trata o redirecionamento após um login bem-sucedido.
-     * Ele verifica o papel (role) do usuário autenticado e o redireciona
-     * para a página apropriada.
-     * @param authentication Contém os dados do usuário logado.
-     * @return Uma string de redirecionamento para a URL correta.
-     */
     @GetMapping("/login_success")
     public String loginSuccess(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
@@ -44,10 +33,6 @@ public class LoginController {
         return "redirect:/";
     }
 
-    /**
-     * Exibe a página de erro para "Acesso Negado" (Erro 403).
-     * @return O nome da view "acesso-negado.html".
-     */
     @GetMapping("/acesso-negado")
     public String acessoNegado() {
         return "acesso-negado";
