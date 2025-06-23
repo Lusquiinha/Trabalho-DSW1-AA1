@@ -35,6 +35,11 @@
                             <li class="list-group-item" th:text="'Km: ' + ${veiculo.quilometragem}">Km</li>
                             <li class="list-group-item fw-bold" th:text="'R$ ' + ${#numbers.formatDecimal(veiculo.valor, 1, 'POINT', 2, 'COMMA')}">Valor</li>
                         </ul>
+                        <div class="row mt-3">
+                            <div th:each="foto : ${veiculo.fotos}" class="col-md-4 mb-2">
+                                <img th:src="@{/veiculos/imagem/{id}(id=${foto.id})}" alt="Imagem do veículo" class="img-thumbnail" style="width: 100%; height: auto;">
+                            </div>
+                        </div>
                         <a th:href="@{/propostas/fazer/{id}(id=${veiculo.id})}" class="btn btn-success mt-3" th:text="#{home.veiculos.proposta.botao}">Fazer Proposta</a>
                     </div>
                 </div>

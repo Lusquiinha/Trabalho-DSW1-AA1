@@ -12,7 +12,7 @@
         <hr>
 
         <form th:action="${veiculo.id == null} ? @{/veiculos/salvar} : @{/veiculos/editar}" 
-                th:object="${veiculo}" method="post">
+                th:object="${veiculo}" method="post" enctype="multipart/form-data">
 
             
             <input type="hidden" th:field="*{id}" />
@@ -51,6 +51,11 @@
                 <label for="valor">Valor (R$)</label>
                 <input type="number" id="valor" class="form-control" th:field="*{valor}" required/>
                 <div class="text-danger" th:if="${#fields.hasErrors('valor')}" th:errors="*{valor}"></div>
+            </div>
+            <div class="form-group mb-3">
+                <label for="imagens">Imagens do Veículo</label>
+                <input type="file" id="imagens" name="imagens" class="form-control" multiple/>
+                <small class="form-text text-muted">Você pode selecionar até 10 imagens.</small>
             </div>
             <button type="submit" class="btn btn-primary">Salvar Veículo</button>
             <a th:href="@{/veiculos/listar}" class="btn btn-secondary">Cancelar</a>
