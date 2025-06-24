@@ -18,7 +18,6 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // O Spring Security exige que os papéis comecem com "ROLE_"
         String roleName = "ROLE_" + usuario.getRole().name();
         return Collections.singletonList(new SimpleGrantedAuthority(roleName));
     }

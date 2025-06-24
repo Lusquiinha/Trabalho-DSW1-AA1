@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile; 
-// import org.springframework.web.multipart.MultipartFile; //seria utilizado para imagens, mas não está implementado
+
 
 
 
@@ -40,8 +40,6 @@ public class VeiculoController {
     @GetMapping("/listar")
     public String listar(ModelMap model, @AuthenticationPrincipal MyUserDetails userDetails) {
         
-        // Pegamos o objeto Loja diretamente do usuário autenticado.
-        // Isso é mais seguro e eficiente, pois não precisa de outra consulta ao banco.
         Loja lojaLogada = (Loja) userDetails.getUsuario();
         
         // R6: Lista todos os veículos da loja logada
@@ -62,11 +60,11 @@ public class VeiculoController {
                      ,@RequestParam("imagens") MultipartFile[] imagens
                      ) {
 
-    // Este bloco irá verificar e imprimir os erros no console
+
     if (result.hasErrors()) {
         System.out.println("=============================================");
         System.out.println("### ERROS DE VALIDAÇÃO ENCONTRADOS ###");
-        // Itera sobre todos os erros e imprime os detalhes
+
         result.getAllErrors().forEach(error -> {
             System.out.println(error.toString());
         });
@@ -82,6 +80,7 @@ public class VeiculoController {
     if(imagens.length > 10){
         return "veiculo/cadastro";
     }
+
     // Salvar as imagens associadas ao veículo
     System.out.println(imagens.length + " imagens recebidas para o veículo: " + veiculo.getModelo());
     for (MultipartFile imagem : imagens) {
@@ -113,12 +112,6 @@ public class VeiculoController {
         return ResponseEntity.notFound().build();
     }
 
-        /**
-     * Exibe o formulário de edição preenchido com os dados de um veículo existente.
-     * @param id O ID do veículo a ser editado (vindo da URL).
-     * @param model O objeto Model para enviar o veículo para a view.
-     * @return O caminho para a página de cadastro, que será reutilizada para edição.
-     */
     @GetMapping("/editar/{id}")
     public String formEditarVeiculo(@PathVariable("id") Long id, ModelMap model) {
         // Busca o veículo pelo ID no banco de dados.
@@ -137,11 +130,11 @@ public class VeiculoController {
                     ,@RequestParam("imagens") MultipartFile[] imagens
                      ) {
 
-    // Este bloco irá verificar e imprimir os erros no console
+
     if (result.getFieldErrorCount() > 2) {
         System.out.println("=============================================");
         System.out.println("### ERROS DE VALIDAÇÃO ENCONTRADOS ###");
-        // Itera sobre todos os erros e imprime os detalhes
+
         result.getAllErrors().forEach(error -> {
             System.out.println(error.toString());
         });

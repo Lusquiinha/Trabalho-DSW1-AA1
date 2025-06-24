@@ -24,7 +24,6 @@ public class ConcessionariaApplication {
         return (args) -> {
 
             // 1. Cria o usuário ADMIN
-            // Este método já verifica se o admin existe antes de criar.
             usuarioService.initAdminUser();
             System.out.println("Verificação de usuário Admin concluída.");
 
@@ -32,8 +31,8 @@ public class ConcessionariaApplication {
             if (clienteService.buscarPorCpf("111.111.111-11") == null) {
                 Cliente cliente = new Cliente();
                 cliente.setEmail("cliente@exemplo.com");
-                cliente.setUsername("cliente"); // Username para login
-                cliente.setPassword("cliente"); // Senha em texto plano
+                cliente.setUsername("cliente");
+                cliente.setPassword("cliente");
                 // O role CLIENT já é definido no construtor do Cliente
                 cliente.setNome("Cliente de Exemplo");
                 cliente.setCpf("111.111.111-11");
@@ -45,13 +44,12 @@ public class ConcessionariaApplication {
                 System.out.println("Cliente de exemplo criado.");
             }
             
-            // 3. Cria um usuário LOJA de exemplo (BLOCO ADICIONADO)
+            // 3. Cria um usuário LOJA de exemplo
             if (lojaService.buscarPorCnpj("22.222.222/0001-22") == null) {
                 Loja loja = new Loja();
                 loja.setEmail("loja@exemplo.com");
-                // Como definimos, o username da loja será o CNPJ para garantir unicidade
                 loja.setUsername("22.222.222/0001-22");
-                loja.setPassword("loja"); // Senha em texto plano
+                loja.setPassword("loja"); 
                 // O role STORE já é definido no construtor da Loja
                 loja.setNome("Loja de Teste");
                 loja.setCnpj("22.222.222/0001-22");

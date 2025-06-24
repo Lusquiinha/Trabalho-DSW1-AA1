@@ -30,12 +30,6 @@ public class HomeController {
         return "home"; // -> /src/main/resources/templates/home.html
     }
 
-        /**
-     * Exibe a página de detalhes (anúncio) de um veículo específico.
-     * @param id O ID do veículo vindo da URL.
-     * @param model O objeto para enviar dados para a view.
-     * @return O caminho para a nova página de detalhes do veículo.
-     */
     @GetMapping("/veiculo/{id}")
     public String detalheVeiculo(@PathVariable("id") Long id, ModelMap model) {
         Veiculo veiculo = veiculoService.buscarPorId(id);

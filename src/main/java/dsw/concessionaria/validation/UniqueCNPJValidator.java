@@ -18,7 +18,7 @@ public class UniqueCNPJValidator implements ConstraintValidator<UniqueCNPJ, Stri
         if (lojaDAO == null || cnpj == null || cnpj.trim().isEmpty()) {
             return true;
         }
-        // O método findByCnpj já existe no LojaDAO
+        
         Loja loja = lojaDAO.findByCnpj(cnpj);
         return loja == null;
     }

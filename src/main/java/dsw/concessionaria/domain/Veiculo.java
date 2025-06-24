@@ -16,48 +16,47 @@ public class Veiculo extends AbstractEntity<Long> {
     @UniquePlaca 
     @NotBlank(message = "{NotBlank.veiculo.placa}")
     @Column(nullable = false, length = 8, unique = true)
-    private String placa; // Requisito: placa 
+    private String placa; 
 
     @NotBlank(message = "{NotBlank.veiculo.modelo}")
     @Column(nullable = false)
-    private String modelo; // Requisito: modelo 
+    private String modelo;  
 
     @UniqueChassi
     @NotBlank(message = "{NotBlank.veiculo.chassi}")
     @Column(nullable = false, length = 17, unique = true)
-    private String chassi; // Requisito: chassi 
+    private String chassi; 
 
     @NotNull(message = "{NotNull.veiculo.ano}")
     @Column(nullable = false)
-    private Integer ano; // Requisito: ano 
+    private Integer ano;  
 
     @NotNull(message = "{NotNull.veiculo.quilometragem}")
     @PositiveOrZero(message = "{PositiveOrZero.veiculo.quilometragem}")
     @Column(nullable = false)
-    private Integer quilometragem; // Requisito: quilometragem 
+    private Integer quilometragem; 
 
     @NotBlank(message = "{NotBlank.veiculo.descricao}")
     @Column(nullable = false, length = 256)
-    private String descricao; // Requisito: descrição 
+    private String descricao; 
 
     @NotNull(message = "{NotNull.veiculo.valor}")
     @Positive(message = "{Positive.veiculo.valor}")
     @Column(nullable = false, columnDefinition = "DECIMAL(10, 2) DEFAULT 0.0")
-    private BigDecimal valor; // Requisito: valor 
+    private BigDecimal valor; 
 
-    // @NotNull(message = "{NotNull.veiculo.loja}")
+   
     @ManyToOne
     @JoinColumn(name = "loja_id")
-    private Loja loja; // Requisito: CNPJ da loja, implementado como uma relação 
+    private Loja loja; 
 
     @OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Imagem> fotos; // Requisito: fotos (no máximo 10) 
+    private List<Imagem> fotos; 
 
-    // Construtor vazio
     public Veiculo() {
     }
 
-    // Getters e Setters para todos os campos (sem alteração)
+    // Getters e Setters
     public String getPlaca() {
         return placa;
     }

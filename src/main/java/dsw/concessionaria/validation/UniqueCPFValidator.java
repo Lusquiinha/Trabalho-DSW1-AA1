@@ -18,7 +18,7 @@ public class UniqueCPFValidator implements ConstraintValidator<UniqueCPF, String
         if (clientDAO == null || cpf == null || cpf.trim().isEmpty()) {
             return true;
         }
-        // O método findByCpf já existe no ClientDAO
+        
         Cliente cliente = clientDAO.findByCpf(cpf);
         return cliente == null;
     }

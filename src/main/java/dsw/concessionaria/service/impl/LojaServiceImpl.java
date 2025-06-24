@@ -4,7 +4,7 @@ import dsw.concessionaria.dao.LojaDAO;
 import dsw.concessionaria.domain.Loja;
 import dsw.concessionaria.service.spec.ILojaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; // IMPORTADO
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,13 +17,13 @@ public class LojaServiceImpl implements ILojaService {
     @Autowired
     private LojaDAO lojaDAO;
 
-    // Injeta o codificador de senhas que foi configurado no WebSecurityConfig
+    
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder; // ADICIONADO
+    private BCryptPasswordEncoder passwordEncoder; 
 
     @Override
     public void salvar(Loja loja) {
-        // --- LÓGICA DE CRIPTOGRAFIA ADICIONADA ---
+  
         // Verifica se uma nova senha foi fornecida antes de criptografar e salvar
         if (loja.getPassword() != null && !loja.getPassword().isEmpty()) {
             String senhaCriptografada = passwordEncoder.encode(loja.getPassword());

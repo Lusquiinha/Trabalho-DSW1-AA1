@@ -33,9 +33,9 @@ public class UsuarioServiceImpl implements IUsuarioService {
             // Se não existir, cria um novo usuário admin
             Usuario admin = new Usuario();
             admin.setEmail("admin@concessionaria.com");
-            admin.setUsername("admin"); // O campo username está no seu modelo
-            admin.setPassword(passwordEncoder.encode("admin")); // Define uma senha padrão e a criptografa
-            admin.setRole(UserRole.ADMIN); // Define o papel como ADMIN
+            admin.setUsername("admin"); 
+            admin.setPassword(passwordEncoder.encode("admin")); 
+            admin.setRole(UserRole.ADMIN); 
             
             usuarioDAO.save(admin);
         }

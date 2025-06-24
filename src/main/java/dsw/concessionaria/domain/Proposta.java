@@ -20,31 +20,26 @@ public class Proposta extends AbstractEntity<Long> {
     @Column(nullable = false)
     private String condicoesPagamento;
 
-    // A anotação @NotNull foi removida daqui, pois a data é definida pelo servidor
     @Column(nullable = false)
     private LocalDateTime dataProposta;
 
-    // A anotação @NotNull foi removida daqui, pois o status é definido pelo servidor
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private StatusProposta status;
 
-    // A anotação @NotNull foi removida daqui, pois o cliente é definido pelo servidor
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    // O veículo vem de um campo oculto no formulário, então mantemos a validação.
     @NotNull
     @ManyToOne
     @JoinColumn(name = "veiculo_id")
     private Veiculo veiculo;
 
-    // Construtor vazio
     public Proposta() {
     }
 
-    // Getters e Setters (sem alteração)
+    // Getters e Setters 
     public BigDecimal getValor() {
         return valor;
     }

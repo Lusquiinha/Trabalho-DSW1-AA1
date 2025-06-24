@@ -35,9 +35,8 @@ public class Cliente extends Usuario {
     @Column(nullable = true)
     private LocalDate dataNascimento;
 
-    // Construtor vazio para JPA
+
     public Cliente() {
-        // ADICIONADO: Garante que todo novo cliente tenha o papel correto.
         super.setRole(UserRole.CLIENT);
     }
     

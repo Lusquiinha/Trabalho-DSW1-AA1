@@ -33,7 +33,7 @@ public class PropostaController {
     private IVeiculoService veiculoService;
 
     // R5: Exibe o formulário para o cliente fazer uma proposta
-    @PreAuthorize("hasRole('CLIENT')") // CORRIGIDO
+    @PreAuthorize("hasRole('CLIENT')") 
     @GetMapping("/fazer/{id}")
     public String formProposta(@PathVariable("id") Long id, ModelMap model) {
         Veiculo veiculo = veiculoService.buscarPorId(id);
@@ -45,7 +45,7 @@ public class PropostaController {
     }
 
     // R5: Salva a proposta enviada pelo cliente
-    @PreAuthorize("hasRole('CLIENT')") // CORRIGIDO
+    @PreAuthorize("hasRole('CLIENT')") 
     @PostMapping("/salvar")
     public String salvarProposta(@Valid Proposta proposta, BindingResult result, @AuthenticationPrincipal MyUserDetails userDetails, RedirectAttributes attr) {
         
@@ -65,7 +65,7 @@ public class PropostaController {
     }
     
     // R7: Exibe a lista de propostas feitas pelo cliente logado.
-    @PreAuthorize("hasRole('CLIENT')") // CORRIGIDO
+    @PreAuthorize("hasRole('CLIENT')") 
     @GetMapping("/cliente")
     public String listarPropostasCliente(ModelMap model, @AuthenticationPrincipal MyUserDetails userDetails) {
         Cliente cliente = (Cliente) userDetails.getUsuario();
@@ -74,7 +74,7 @@ public class PropostaController {
     }
     
     // R8: Exibe a lista de propostas recebidas pela loja logada.
-    @PreAuthorize("hasRole('STORE')") // CORRIGIDO
+    @PreAuthorize("hasRole('STORE')") 
     @GetMapping("/loja")
     public String listarPropostasLoja(ModelMap model, @AuthenticationPrincipal MyUserDetails userDetails) {
         Loja loja = (Loja) userDetails.getUsuario();
@@ -83,7 +83,7 @@ public class PropostaController {
     }
 
     // Exibe o formulário de avaliação para a loja
-    @PreAuthorize("hasRole('STORE')") // CORRIGIDO
+    @PreAuthorize("hasRole('STORE')") 
     @GetMapping("/avaliar/{id}")
     public String formAvaliacao(@PathVariable("id") Long id, ModelMap model) {
         model.addAttribute("proposta", propostaService.buscarPorId(id));
@@ -91,7 +91,7 @@ public class PropostaController {
     }
 
     // Processa a avaliação enviada pela loja
-    @PreAuthorize("hasRole('STORE')") // CORRIGIDO
+    @PreAuthorize("hasRole('STORE')") 
     @PostMapping("/avaliar")
     public String avaliar(
             @RequestParam("propostaId") Long propostaId,
