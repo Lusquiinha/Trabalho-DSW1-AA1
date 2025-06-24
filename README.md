@@ -52,12 +52,12 @@ Antes de rodar o projeto, certifique-se de ter instalado:
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/concessionaria-dsw.git
+   git clone https://github.com/Lusquiinha/Trabalho-DSW1-AA1.git
    ```
 
 2. Navegue até o diretório do projeto:
    ```bash
-   cd concessionaria-dsw
+   cd Trabalho-DSW1-AA1
    ```
 
 3. Compile o projeto usando Maven:
