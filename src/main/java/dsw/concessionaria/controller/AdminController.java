@@ -6,6 +6,7 @@ import dsw.concessionaria.service.spec.IClienteService;
 import dsw.concessionaria.service.spec.ILojaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -76,7 +77,13 @@ public class AdminController {
 
     @GetMapping("/lojas/excluir/{id}")
     public String excluirLoja(@PathVariable("id") Long id, RedirectAttributes attr) {
-        lojaService.excluir(id);
+        try {
+            lojaService.excluir(id);
+        } catch (DataIntegrityViolationException e) {
+            System.out.println("Erro ao excluir loja: " + e.getMessage() + e.getClass());
+            attr.addFlashAttribute("erro", "Não é possível excluir a loja, pois ela está vinculada a um veículo ou proposta.");
+            return "redirect:/admin/lojas";
+        }
         attr.addFlashAttribute("sucesso", "Loja excluída com sucesso.");
         return "redirect:/admin/lojas";
     }
@@ -124,6 +131,13 @@ public class AdminController {
 
     @GetMapping("/clientes/excluir/{id}")
     public String excluirCliente(@PathVariable("id") Long id, RedirectAttributes attr) {
+        try {
+            clienteService.excluir(id);
+        } catch (DataIntegrityViolationException e) {
+            System.out.println("Erro ao excluir cliente: " + e.getMessage());
+            attr.addFlashAttribute("erro", "Não é possível excluir o cliente, pois ele está vinculado a uma proposta ou veículo.");
+            return "redirect:/admin/clientes";
+        }
         clienteService.excluir(id);
         attr.addFlashAttribute("sucesso", "Cliente excluído com sucesso.");
         return "redirect:/admin/clientes";
