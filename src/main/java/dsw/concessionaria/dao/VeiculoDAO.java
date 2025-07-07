@@ -2,13 +2,13 @@ package dsw.concessionaria.dao;
 
 import dsw.concessionaria.domain.Loja;
 import dsw.concessionaria.domain.Veiculo;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface VeiculoDAO extends JpaRepository<Veiculo, Long> {
+public interface VeiculoDAO extends CrudRepository<Veiculo, Long> {
 
     // Método para o Requisito R6: Listagem de todos os veículos de uma loja 
     List<Veiculo> findAllByLoja(Loja loja);

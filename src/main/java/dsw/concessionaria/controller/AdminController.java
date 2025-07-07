@@ -66,6 +66,7 @@ public class AdminController {
     @PostMapping("/lojas/salvar")
     public String salvarLoja(@Valid Loja loja, BindingResult result, RedirectAttributes attr) {
         if (result.hasErrors()) {
+            System.out.println("Erro de validação: " + result.toString());
             return "admin/loja/cadastro";
         }
         lojaService.salvar(loja);

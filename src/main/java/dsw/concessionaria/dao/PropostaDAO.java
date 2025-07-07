@@ -5,14 +5,14 @@ import dsw.concessionaria.domain.Loja;
 import dsw.concessionaria.domain.Proposta;
 import dsw.concessionaria.domain.Veiculo;
 import dsw.concessionaria.enums.StatusProposta;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PropostaDAO extends JpaRepository<Proposta, Long> {
+public interface PropostaDAO extends CrudRepository<Proposta, Long> {
 
     // Método para o Requisito R7: Listar todas as propostas de um cliente 
     List<Proposta> findAllByCliente(Cliente cliente);

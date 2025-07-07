@@ -12,7 +12,7 @@ import dsw.concessionaria.validation.UniqueUsername;
 public class Usuario extends AbstractEntity<Long> {
 
     @UniqueUsername
-    @Column(nullable = false, length = 20, unique = true)
+    @Column(nullable = false, length = 255, unique = true)
     private String username;
 
     @NotBlank
