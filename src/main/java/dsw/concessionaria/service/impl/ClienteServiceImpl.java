@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList; 
 import java.util.List;
 
 @Service
@@ -60,7 +61,11 @@ public void salvar(Cliente cliente) {
     @Override
     @Transactional(readOnly = true)
     public List<Cliente> buscarTodos() {
-        return clientDAO.findAll();
+        List<Cliente> listaClientes = new ArrayList<>();
+        // O método findAll() do CrudRepository retorna um Iterable.
+        // Nós o percorremos e adicionamos cada item a uma nova lista.
+        clientDAO.findAll().forEach(listaClientes::add);
+        return listaClientes;
     }
     
     @Override

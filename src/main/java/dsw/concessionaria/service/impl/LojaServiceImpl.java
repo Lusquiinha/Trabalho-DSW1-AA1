@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -54,7 +55,9 @@ public class LojaServiceImpl implements ILojaService {
     @Override
     @Transactional(readOnly = true)
     public List<Loja> buscarTodos() {
-        return lojaDAO.findAll();
+        List<Loja> listaLojas = new ArrayList<>();
+        lojaDAO.findAll().forEach(listaLojas::add);
+        return listaLojas;
     }
 
     @Override

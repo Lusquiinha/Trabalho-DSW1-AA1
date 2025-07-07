@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,7 +42,9 @@ public class VeiculoServiceImpl implements IVeiculoService {
     @Override
     @Transactional(readOnly = true)
     public List<Veiculo> buscarTodos() {
-        return veiculoDAO.findAll();
+        List<Veiculo> listaVeiculos = new ArrayList<>();
+        veiculoDAO.findAll().forEach(listaVeiculos::add);
+        return listaVeiculos;
     }
 
     @Override
