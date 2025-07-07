@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 import java.time.LocalDate;
 
@@ -33,6 +35,7 @@ public class Cliente extends Usuario {
     @NotNull(message = "{NotNull.client.dataNascimento}")
     @Past(message = "{Past.client.dataNascimento}")
     @Column(nullable = true)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dataNascimento;
 
 
