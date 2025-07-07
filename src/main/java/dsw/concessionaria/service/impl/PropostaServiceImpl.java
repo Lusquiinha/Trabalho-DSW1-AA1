@@ -47,6 +47,7 @@ public class PropostaServiceImpl implements IPropostaService {
         String destinatario = proposta.getCliente().getEmail();
         String assunto = "Atualização sobre sua proposta para o veículo " + proposta.getVeiculo().getModelo();
         String corpo;
+        String nomeLoja = proposta.getVeiculo().getLoja().getNome();
 
         if (proposta.getStatus() == StatusProposta.ACEITO) {
             corpo = String.format(
@@ -63,7 +64,7 @@ public class PropostaServiceImpl implements IPropostaService {
             corpo += "\n\nAtenciosamente,\n" + proposta.getVeiculo().getLoja().getNome();
         }
         
-        emailService.enviarEmail(destinatario, assunto, corpo);
+        emailService.enviarEmail(nomeLoja, destinatario, assunto, corpo);
     }
 
     @Override
