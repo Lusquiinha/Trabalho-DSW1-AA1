@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -37,6 +38,10 @@ public class WebSecurityConfig {
         http
             .authenticationProvider(authenticationProvider())
             .authorizeHttpRequests(authz -> authz
+
+                // URLs da API REST, permite acesso sem autenticação
+                .requestMatchers("/api/**").permitAll() 
+
                 // URLs Públicas
                 .requestMatchers("/", "/login", "/login-error", "/error", "/acesso-negado").permitAll()
                 .requestMatchers("/clientes/cadastrar", "/clientes/salvar").permitAll()
@@ -54,6 +59,9 @@ public class WebSecurityConfig {
                 
                 .anyRequest().authenticated()
             )
+            // Desabilita CSRF para o exemplo
+            .csrf(AbstractHttpConfigurer::disable)
+
             .formLogin(form -> form
                 .loginPage("/login")
                 .defaultSuccessUrl("/login_success", true)
@@ -68,4 +76,8 @@ public class WebSecurityConfig {
 
         return http.build();
     }
+
+
+
+    
 }

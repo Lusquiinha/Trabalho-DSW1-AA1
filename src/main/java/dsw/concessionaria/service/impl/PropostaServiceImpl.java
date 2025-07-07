@@ -3,6 +3,7 @@ package dsw.concessionaria.service.impl;
 import dsw.concessionaria.dao.PropostaDAO;
 import dsw.concessionaria.service.spec.IEmailService;
 import dsw.concessionaria.domain.Proposta;
+import dsw.concessionaria.domain.Veiculo;
 import dsw.concessionaria.domain.Cliente;
 import dsw.concessionaria.domain.Loja;
 import dsw.concessionaria.enums.StatusProposta;
@@ -92,6 +93,12 @@ public class PropostaServiceImpl implements IPropostaService {
     @Transactional(readOnly = true)
     public List<Proposta> buscarTodosPorCliente(Cliente cliente) {
         return propostaDAO.findAllByCliente(cliente); 
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Proposta> buscarTodosPorVeiculo(Veiculo veiculo) {
+        return propostaDAO.findAllByVeiculo(veiculo);
     }
 
     @Override

@@ -20,6 +20,9 @@ public interface PropostaDAO extends CrudRepository<Proposta, Long> {
     // Método para o Requisito R8: Permitir que a loja veja as propostas de seus veículos
     List<Proposta> findAllByVeiculo_Loja(Loja loja);
 
+    // Método para o Requisito R9: Listar todas as propostas de um veículo
+    List<Proposta> findAllByVeiculo(Veiculo veiculo);
+
     // Método de apoio para o Requisito R13: Verificar se o cliente já tem proposta em aberto para um veículo 
     Optional<Proposta> findByClienteAndVeiculoAndStatus(Cliente cliente, Veiculo veiculo, StatusProposta status);
 }
