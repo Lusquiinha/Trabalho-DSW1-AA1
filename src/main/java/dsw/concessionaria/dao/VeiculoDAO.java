@@ -15,8 +15,10 @@ public interface VeiculoDAO extends CrudRepository<Veiculo, Long> {
     Veiculo findByPlaca(String placa);
     Veiculo findByChassi(String chassi);
 
+    List<Veiculo> findAllByVendidoFalse(); // Método para listar veículos não vendidos
 
 
     // Método para o Requisito R4: Filtrar os veículos por modelo 
     List<Veiculo> findAllByModeloContainingIgnoreCase(String modelo);
+    List<Veiculo> findAllByVendidoFalseAndModeloContainingIgnoreCase(String modelo);
 }

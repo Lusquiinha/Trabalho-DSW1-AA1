@@ -45,26 +45,30 @@ public class Veiculo extends AbstractEntity<Long> {
     @Column(nullable = false, columnDefinition = "DECIMAL(10, 2) DEFAULT 0.0")
     private BigDecimal valor; 
 
-   
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean vendido;
+
+    
     @ManyToOne
     @JoinColumn(name = "loja_id")
     private Loja loja; 
-
+    
     @OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Imagem> fotos; 
 
     public Veiculo() {
+        vendido = false; 
     }
-
+    
     // Getters e Setters
     public String getPlaca() {
         return placa;
     }
-
+    
     public void setPlaca(String placa) {
         this.placa = placa;
     }
-
+    
     public String getModelo() {
         return modelo;
     }
@@ -80,7 +84,7 @@ public class Veiculo extends AbstractEntity<Long> {
     public void setChassi(String chassi) {
         this.chassi = chassi;
     }
-
+    
     public Integer getAno() {
         return ano;
     }
@@ -96,36 +100,44 @@ public class Veiculo extends AbstractEntity<Long> {
     public void setQuilometragem(Integer quilometragem) {
         this.quilometragem = quilometragem;
     }
-
+    
     public String getDescricao() {
         return descricao;
     }
-
+    
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
-
+    
     public BigDecimal getValor() {
         return valor;
     }
-
+    
     public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
-
+    
     public Loja getLoja() {
         return loja;
     }
-
+    
     public void setLoja(Loja loja) {
         this.loja = loja;
     }
-
+    
     public List<Imagem> getFotos() {
         return fotos;
     }
-
+    
     public void setFotos(List<Imagem> fotos) {
         this.fotos = fotos;
+    }
+    
+    public boolean isVendido() {
+        return vendido;
+    }
+
+    public void setVendido(boolean vendido) {
+        this.vendido = vendido;
     }
 }
