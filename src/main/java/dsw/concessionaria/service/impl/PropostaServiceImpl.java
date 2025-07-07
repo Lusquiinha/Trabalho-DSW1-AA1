@@ -7,6 +7,8 @@ import dsw.concessionaria.domain.Cliente;
 import dsw.concessionaria.domain.Loja;
 import dsw.concessionaria.enums.StatusProposta;
 import dsw.concessionaria.service.spec.IPropostaService;
+import dsw.concessionaria.service.spec.IVeiculoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,9 @@ public class PropostaServiceImpl implements IPropostaService {
     @Autowired
     private IEmailService emailService; 
 
+    @Autowired
+    private IVeiculoService veiculoService;
+
      @Override
     public void atualizarStatus(Long id, String status, String contraProposta, String linkReuniao) {
         Proposta proposta = propostaDAO.findById(id).orElseThrow(() -> new RuntimeException("Proposta não encontrada!"));
@@ -32,6 +37,17 @@ public class PropostaServiceImpl implements IPropostaService {
         // Atualiza o status
         if ("ACEITO".equals(status)) {
             proposta.setStatus(StatusProposta.ACEITO);
+            var veiculo = proposta.getVeiculo();
+            veiculo.setVendido(true); // Marca o veículo como vendido
+            veiculoService.salvar(veiculo); 
+
+            List<Proposta> propostasPendentes = propostaDAO.findAllByVeiculo(veiculo);
+            for (Proposta p : propostasPendentes) {
+                System.out.println(p.toString());
+                if (p.getStatus() == StatusProposta.ABERTO && !p.getId().equals(id)) {
+                    atualizarStatus(p.getId(), "NAO_ACEITO", null, null); // Marca as outras propostas como não aceitas
+                }
+            }
         } else if ("NAO_ACEITO".equals(status)) {
             proposta.setStatus(StatusProposta.NAO_ACEITO);
         } else {

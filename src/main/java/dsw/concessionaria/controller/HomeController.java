@@ -33,6 +33,7 @@ public class HomeController {
     @GetMapping("/veiculo/{id}")
     public String detalheVeiculo(@PathVariable("id") Long id, ModelMap model) {
         Veiculo veiculo = veiculoService.buscarPorId(id);
+        
         if (veiculo == null) {
             // Se o veículo não for encontrado, redireciona para a home
             return "redirect:/";

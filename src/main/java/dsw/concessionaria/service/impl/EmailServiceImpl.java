@@ -12,6 +12,7 @@ import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 
 
 @Service
@@ -19,7 +20,8 @@ public class EmailServiceImpl implements IEmailService {
 	@Autowired
 	JavaMailSender emailSender;
 
-    @Override
+    @Async
+	@Override
     public void enviarEmail(String nodeDoRemetente, String destinatario, String assunto, String corpo) {
         System.out.println("=====================================================");
         System.out.println("SIMULAÇÃO DE ENVIO DE E-MAIL");
@@ -57,6 +59,7 @@ public class EmailServiceImpl implements IEmailService {
 			}
 
 			emailSender.send(message);
+		
 
 			System.out.println("Mensagem enviada com sucesso!");
 

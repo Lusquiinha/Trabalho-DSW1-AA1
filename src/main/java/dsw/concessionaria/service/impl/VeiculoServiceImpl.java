@@ -41,13 +41,13 @@ public class VeiculoServiceImpl implements IVeiculoService {
     @Override
     @Transactional(readOnly = true)
     public List<Veiculo> buscarTodos() {
-        return veiculoDAO.findAll();
+        return veiculoDAO.findAllByVendidoFalse();
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Veiculo> buscarPorModelo(String modelo) {
-        return veiculoDAO.findAllByModeloContainingIgnoreCase(modelo);
+        return veiculoDAO.findAllByVendidoFalseAndModeloContainingIgnoreCase(modelo);
     }
 
     @Override
@@ -66,4 +66,5 @@ public class VeiculoServiceImpl implements IVeiculoService {
     public Imagem buscarImagemPorId(Long id) {
         return imagemDAO.findById(id).orElse(null);
     }
+
 }
