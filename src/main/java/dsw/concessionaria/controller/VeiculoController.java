@@ -71,15 +71,17 @@ public class VeiculoController {
         System.out.println("=============================================");
         return "veiculo/cadastro";
     }
+
+    if(imagens.length > 10){
+        attr.addFlashAttribute("erro", "Você pode enviar no máximo 10 imagens.");
+        return "redirect:/veiculos/cadastrar";
+    }
     
     // O resto do código só executa se não houver erros
     Loja lojaLogada = (Loja) userDetails.getUsuario();
     veiculo.setLoja(lojaLogada);
 
     veiculoService.salvar(veiculo);
-    if(imagens.length > 10){
-        return "veiculo/cadastro";
-    }
 
     // Salvar as imagens associadas ao veículo
     System.out.println(imagens.length + " imagens recebidas para o veículo: " + veiculo.getModelo());
@@ -92,7 +94,8 @@ public class VeiculoController {
                 novaImagem.setVeiculo(veiculo);
                 veiculoService.salvarImagem(novaImagem);
             } catch (IOException e) {
-                throw new RuntimeException("Erro ao processar imagem: " + e.getMessage());
+                attr.addFlashAttribute("erro", "Erro ao enviar as imagens. Por favor, tente novamente.");
+                return "redirect:/veiculos/cadastrar";
             }
         }
     }
