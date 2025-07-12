@@ -23,8 +23,8 @@ public class VeiculoServiceImpl implements IVeiculoService {
     private ImagemDAO imagemDAO;
 
     @Override
-    public void salvar(Veiculo veiculo) {
-        veiculoDAO.save(veiculo);
+    public Long salvar(Veiculo veiculo) {
+        return veiculoDAO.save(veiculo).getId();
     }
 
     @Override
@@ -57,8 +57,8 @@ public class VeiculoServiceImpl implements IVeiculoService {
     }
 
     @Override   
-    public void salvarImagem(Imagem imagem) {
-        imagemDAO.save(imagem);
+    public Long salvarImagem(Imagem imagem) {
+        return imagemDAO.save(imagem).getId();
     }
 
     @Override

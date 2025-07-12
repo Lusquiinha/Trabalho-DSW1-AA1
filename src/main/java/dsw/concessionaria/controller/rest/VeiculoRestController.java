@@ -1,11 +1,13 @@
 package dsw.concessionaria.controller.rest;
 
+import dsw.concessionaria.domain.Imagem;
 import dsw.concessionaria.domain.Loja;
 import dsw.concessionaria.domain.Veiculo;
 import dsw.concessionaria.service.spec.ILojaService;
 import dsw.concessionaria.service.spec.IVeiculoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,5 +67,16 @@ public class VeiculoRestController {
         veiculo.setLoja(loja);
         veiculoService.salvar(veiculo);
         return ResponseEntity.status(201).body(veiculo);
+    }
+
+    @GetMapping("/imagem/{id}")
+    public ResponseEntity<byte[]> exibirImagem(@PathVariable Long id) {
+        Imagem imagem = veiculoService.buscarImagemPorId(id);
+        if (imagem != null) {
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                    .body(imagem.getDados());
+        }
+        return ResponseEntity.notFound().build();
     }
 }

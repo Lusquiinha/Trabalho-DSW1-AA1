@@ -53,8 +53,10 @@ public class Veiculo extends AbstractEntity<Long> {
     @JoinColumn(name = "loja_id")
     private Loja loja; 
     
-    @OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Imagem> fotos; 
+    @ElementCollection
+    @CollectionTable(name = "veiculo_imagens", joinColumns = @JoinColumn(name = "veiculo_id"))
+    @Column(name = "imagem_id")
+    private List<Long> fotos; // Lista de IDs das imagens
 
     public Veiculo() {
         vendido = false; 
@@ -125,11 +127,11 @@ public class Veiculo extends AbstractEntity<Long> {
         this.loja = loja;
     }
     
-    public List<Imagem> getFotos() {
+    public List<Long> getFotos() {
         return fotos;
     }
     
-    public void setFotos(List<Imagem> fotos) {
+    public void setFotos(List<Long> fotos) {
         this.fotos = fotos;
     }
     

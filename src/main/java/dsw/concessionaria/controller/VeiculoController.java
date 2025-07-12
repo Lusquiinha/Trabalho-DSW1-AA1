@@ -8,6 +8,8 @@ import dsw.concessionaria.service.spec.IVeiculoService;
 import jakarta.validation.Valid;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -81,10 +83,11 @@ public class VeiculoController {
     Loja lojaLogada = (Loja) userDetails.getUsuario();
     veiculo.setLoja(lojaLogada);
 
-    veiculoService.salvar(veiculo);
+    var veiculoId = veiculoService.salvar(veiculo);
 
     // Salvar as imagens associadas ao veículo
     System.out.println(imagens.length + " imagens recebidas para o veículo: " + veiculo.getModelo());
+    List<Long> fotos = new ArrayList<>(); 
     for (MultipartFile imagem : imagens) {
         if (!imagem.isEmpty()) {
             try {
@@ -92,7 +95,7 @@ public class VeiculoController {
                 novaImagem.setNomeArquivo(imagem.getOriginalFilename());
                 novaImagem.setDados(imagem.getBytes()); // Salva os bytes da imagem
                 novaImagem.setVeiculo(veiculo);
-                veiculoService.salvarImagem(novaImagem);
+                fotos.add(veiculoService.salvarImagem(novaImagem));
             } catch (IOException e) {
                 attr.addFlashAttribute("erro", "Erro ao enviar as imagens. Por favor, tente novamente.");
                 return "redirect:/veiculos/cadastrar";
@@ -100,6 +103,10 @@ public class VeiculoController {
         }
     }
 
+    veiculo = veiculoService.buscarPorId(veiculoId); 
+    veiculo.setFotos(fotos);
+    veiculoService.salvar(veiculo); 
+    
     attr.addFlashAttribute("sucesso", "Veículo cadastrado com sucesso.");
     return "redirect:/veiculos/listar";
 }

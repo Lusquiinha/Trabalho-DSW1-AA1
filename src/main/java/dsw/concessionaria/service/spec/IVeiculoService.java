@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IVeiculoService {
 
-    void salvar(Veiculo veiculo);
+    Long salvar(Veiculo veiculo);
 
     void excluir(Long id);
 
@@ -23,5 +23,5 @@ public interface IVeiculoService {
 
     Imagem buscarImagemPorId(Long id);
 
-    void salvarImagem(Imagem imagem);
+    Long salvarImagem(Imagem imagem);
 }
