@@ -7,8 +7,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorViewResolver;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Component
 public class ErrorViewController implements ErrorViewResolver {
@@ -16,18 +19,10 @@ public class ErrorViewController implements ErrorViewResolver {
 	@Override
 	public ModelAndView resolveErrorView(HttpServletRequest request, HttpStatus status, Map<String, Object> map) {
 		        
-		Throwable throwable = (Throwable) request.getAttribute("jakarta.servlet.error.exception");
-		
 		ModelAndView model = new ModelAndView("erro");
 
-		if (throwable instanceof MaxUploadSizeExceededException) {
-			model.addObject("status", 413);
-			model.addObject("error", "erro.413.titulo");
-			model.addObject("message", "erro.413.mensagem");
-			return model;
-		}
-		
 		model.addObject("status", status.value());
+		
 		switch (status.value()) {
 		case 401:
 			model.addObject("error", "erro.401.titulo");
@@ -55,5 +50,15 @@ public class ErrorViewController implements ErrorViewResolver {
 			break;
 		}
 		return model;
+	}
+	
+	@ControllerAdvice
+	public class GlobalExceptionHandler {
+
+	    @ExceptionHandler(MaxUploadSizeExceededException.class)
+	    public String handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex, RedirectAttributes redirectAttributes) {
+	        redirectAttributes.addFlashAttribute("erro", "O arquivo enviado excede o tamanho máximo permitido.");
+	        return "redirect:/veiculos/cadastrar";
+	    }
 	}
 }
