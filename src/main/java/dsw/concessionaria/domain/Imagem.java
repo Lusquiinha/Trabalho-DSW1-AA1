@@ -11,11 +11,11 @@ import jakarta.validation.constraints.NotNull;
 public class Imagem extends AbstractEntity<Long> {
 
     @NotBlank
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255)
     private String nomeArquivo; // Nome do arquivo original
 
     @NotNull
-    @Column(nullable = false, columnDefinition = "BLOB")
+    @Column(nullable = false, columnDefinition = "MEDIUMBLOB")
     private byte[] dados; // Dados da imagem em bytes
 
     @ManyToOne

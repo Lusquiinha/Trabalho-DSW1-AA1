@@ -13,8 +13,8 @@
                     <div class="card-body text-center">
                         <h5 class="card-title" th:text="#{detalhe.veiculo.galeria}">Galeria de Fotos</h5>
                         <div class="row">
-                            <div th:each="foto : ${veiculo.fotos}" class="col-md-4 mb-2">
-                                <img th:src="@{/veiculos/imagem/{id}(id=${foto.id})}" alt="Imagem do veículo" class="img-thumbnail" style="width: 100%; height: auto;">
+                            <div th:each="foto_id : ${veiculo.fotos}" class="col-md-4 mb-2">
+                                <img th:src="@{/veiculos/imagem/{id}(id=${foto_id})}" alt="Imagem do veículo" class="img-thumbnail" style="width: 100%; height: auto;">
                             </div>
                         </div>
                     </div>
