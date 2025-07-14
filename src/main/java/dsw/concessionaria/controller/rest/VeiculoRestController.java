@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -58,11 +59,13 @@ public class VeiculoRestController {
      * Mapeado para: POST http://localhost:8080/api/veiculos/lojas/{id}
      */
     @PostMapping("/lojas/{id}")
-    public ResponseEntity<Veiculo> criar(@PathVariable("id") Long id, @Valid @RequestBody Veiculo veiculo) {
+    public ResponseEntity<Veiculo> criar(@PathVariable("id") Long id, @Valid @RequestBody Veiculo veiculo, BindingResult result) {
         Loja loja = lojaService.buscarPorId(id);
         if (loja == null) {
-            
             return ResponseEntity.notFound().build();
+        }
+        if (result.hasErrors()){
+            return ResponseEntity.badRequest().build(); // Retorna 400 Bad Request se houver erros de validação
         }
         veiculo.setLoja(loja);
         veiculoService.salvar(veiculo);
