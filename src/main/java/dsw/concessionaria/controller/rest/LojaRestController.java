@@ -5,6 +5,7 @@ import dsw.concessionaria.service.spec.ILojaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,7 +48,10 @@ public class LojaRestController {
      * [cite_start]Mapeado para: POST http://localhost:8080/api/lojas
      */
     @PostMapping
-    public ResponseEntity<Loja> criar(@Valid @RequestBody Loja loja) {
+    public ResponseEntity<Loja> criar(@Valid @RequestBody Loja loja, BindingResult result) {
+        if(result.hasErrors() || loja.getPassword() == null || loja.getPassword().isEmpty()) {
+            return ResponseEntity.badRequest().build(); // Retorna 400 Bad Request se houver erros de validação
+        }
         lojaService.salvar(loja);
         return ResponseEntity.status(201).body(loja); // Retorna 201 Created
     }
@@ -57,7 +61,10 @@ public class LojaRestController {
      * [cite_start]Mapeado para: PUT http://localhost:8080/api/lojas/{id}
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Loja> atualizar(@PathVariable Long id, @Valid @RequestBody Loja loja) {
+    public ResponseEntity<Loja> atualizar(@PathVariable Long id, @Valid @RequestBody Loja loja, BindingResult result) {
+        if(result.getFieldErrorCount() > 2){
+            return ResponseEntity.badRequest().build(); 
+        }
         if (lojaService.buscarPorId(id) == null) {
             return ResponseEntity.notFound().build();
         }

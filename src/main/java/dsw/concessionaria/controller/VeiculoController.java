@@ -8,6 +8,8 @@ import dsw.concessionaria.service.spec.IVeiculoService;
 import jakarta.validation.Valid;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -71,18 +73,21 @@ public class VeiculoController {
         System.out.println("=============================================");
         return "veiculo/cadastro";
     }
+
+    if(imagens.length > 10){
+        attr.addFlashAttribute("erro", "Você pode enviar no máximo 10 imagens.");
+        return "redirect:/veiculos/cadastrar";
+    }
     
     // O resto do código só executa se não houver erros
     Loja lojaLogada = (Loja) userDetails.getUsuario();
     veiculo.setLoja(lojaLogada);
 
-    veiculoService.salvar(veiculo);
-    if(imagens.length > 10){
-        return "veiculo/cadastro";
-    }
+    var veiculoId = veiculoService.salvar(veiculo);
 
     // Salvar as imagens associadas ao veículo
     System.out.println(imagens.length + " imagens recebidas para o veículo: " + veiculo.getModelo());
+    List<Long> fotos = new ArrayList<>(); 
     for (MultipartFile imagem : imagens) {
         if (!imagem.isEmpty()) {
             try {
@@ -90,13 +95,18 @@ public class VeiculoController {
                 novaImagem.setNomeArquivo(imagem.getOriginalFilename());
                 novaImagem.setDados(imagem.getBytes()); // Salva os bytes da imagem
                 novaImagem.setVeiculo(veiculo);
-                veiculoService.salvarImagem(novaImagem);
+                fotos.add(veiculoService.salvarImagem(novaImagem));
             } catch (IOException e) {
-                throw new RuntimeException("Erro ao processar imagem: " + e.getMessage());
+                attr.addFlashAttribute("erro", "Erro ao enviar as imagens. Por favor, tente novamente.");
+                return "redirect:/veiculos/cadastrar";
             }
         }
     }
 
+    veiculo = veiculoService.buscarPorId(veiculoId); 
+    veiculo.setFotos(fotos);
+    veiculoService.salvar(veiculo); 
+    
     attr.addFlashAttribute("sucesso", "Veículo cadastrado com sucesso.");
     return "redirect:/veiculos/listar";
 }

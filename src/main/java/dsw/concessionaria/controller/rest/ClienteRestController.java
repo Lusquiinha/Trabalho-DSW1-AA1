@@ -5,6 +5,7 @@ import dsw.concessionaria.service.spec.IClienteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,7 +48,10 @@ public class ClienteRestController {
      * Mapeado para: POST http://localhost:8080/api/clientes
      */
     @PostMapping
-    public ResponseEntity<Cliente> criar(@Valid @RequestBody Cliente cliente) {
+    public ResponseEntity<Cliente> criar(@Valid @RequestBody Cliente cliente, BindingResult result) {
+        if(result.hasErrors() || cliente.getPassword() == null || cliente.getPassword().isEmpty()) {
+            return ResponseEntity.badRequest().build(); // Retorna 400 Bad Request se houver erros de validação
+        }
         clienteService.salvar(cliente);
         return ResponseEntity.status(201).body(cliente); // Retorna 201 Created com o cliente criado
     }
@@ -57,7 +61,10 @@ public class ClienteRestController {
      * Mapeado para: PUT http://localhost:8080/api/clientes/{id}
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> atualizar(@PathVariable Long id, @Valid @RequestBody Cliente cliente) {
+    public ResponseEntity<Cliente> atualizar(@PathVariable Long id, @Valid @RequestBody Cliente cliente, BindingResult result) {
+        if(result.getFieldErrorCount() > 3){
+            return ResponseEntity.badRequest().build(); // Retorna 400 Bad Request se houver muitos erros de validação
+        }
         if (clienteService.buscarPorId(id) == null) {
             return ResponseEntity.notFound().build();
         }

@@ -1,12 +1,15 @@
 package dsw.concessionaria.controller.rest;
 
+import dsw.concessionaria.domain.Imagem;
 import dsw.concessionaria.domain.Loja;
 import dsw.concessionaria.domain.Veiculo;
 import dsw.concessionaria.service.spec.ILojaService;
 import dsw.concessionaria.service.spec.IVeiculoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,14 +59,27 @@ public class VeiculoRestController {
      * Mapeado para: POST http://localhost:8080/api/veiculos/lojas/{id}
      */
     @PostMapping("/lojas/{id}")
-    public ResponseEntity<Veiculo> criar(@PathVariable("id") Long id, @Valid @RequestBody Veiculo veiculo) {
+    public ResponseEntity<Veiculo> criar(@PathVariable("id") Long id, @Valid @RequestBody Veiculo veiculo, BindingResult result) {
         Loja loja = lojaService.buscarPorId(id);
         if (loja == null) {
-            
             return ResponseEntity.notFound().build();
+        }
+        if (result.hasErrors()){
+            return ResponseEntity.badRequest().build(); // Retorna 400 Bad Request se houver erros de validação
         }
         veiculo.setLoja(loja);
         veiculoService.salvar(veiculo);
         return ResponseEntity.status(201).body(veiculo);
+    }
+
+    @GetMapping("/imagem/{id}")
+    public ResponseEntity<byte[]> exibirImagem(@PathVariable Long id) {
+        Imagem imagem = veiculoService.buscarImagemPorId(id);
+        if (imagem != null) {
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                    .body(imagem.getDados());
+        }
+        return ResponseEntity.notFound().build();
     }
 }
